@@ -46,7 +46,7 @@ function CompleteProfile() {
             <div className="w-full max-w-md">
                 {/* Header */}
                 <div className="text-center mb-10">
-                    <div className="text-6xl mb-4 animate-float">👋</div>
+                    <div className="text-6xl mb-4">👋</div>
                     <h1 className="text-3xl font-bold gradient-text mb-2">
                         Almost There!
                     </h1>

@@ -18,7 +18,7 @@ function Profile() {
             {/* Profile Header */}
             <div className="glass-card p-8 text-center mb-8">
                 {/* Avatar */}
-                <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-4xl font-bold text-white animate-pulse-glow">
+                <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-4xl font-bold text-white">
                     {profile.name.charAt(0).toUpperCase()}
                 </div>
 

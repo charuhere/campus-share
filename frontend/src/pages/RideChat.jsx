@@ -128,7 +128,7 @@ function RideChat() {
                 <div className="max-w-4xl mx-auto space-y-4">
                     {messages.length === 0 && (
                         <div className="text-center py-20">
-                            <div className="text-6xl mb-4 animate-float">💬</div>
+                            <div className="text-6xl mb-4">💬</div>
                             <p className="text-gray-400">No messages yet. Say hi!</p>
                         </div>
                     )}

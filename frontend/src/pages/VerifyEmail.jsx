@@ -7,7 +7,7 @@ function VerifyEmail() {
         <div className="min-h-screen flex items-center justify-center px-4">
             <div className="text-center max-w-md">
                 {/* Icon */}
-                <div className="text-7xl mb-6 animate-float">📧</div>
+                <div className="text-7xl mb-6">📧</div>
 
                 {/* Heading */}
                 <h1 className="text-3xl font-bold text-white mb-4">

@@ -98,7 +98,7 @@ function MyRides() {
             {/* Empty State */}
             {!loading && rides.length === 0 && (
                 <div className="text-center py-20">
-                    <div className="text-6xl mb-4 animate-float">
+                    <div className="text-6xl mb-4">
                         {activeTab === 'created' ? '🚗' : '🤝'}
                     </div>
                     <h3 className="text-2xl font-semibold text-white mb-2">
@@ -127,8 +127,8 @@ function TabButton({ active, onClick, count, children }) {
         <button
             onClick={onClick}
             className={`px-6 py-3 rounded-xl font-medium transition flex items-center gap-2 ${active
-                    ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
-                    : 'text-gray-400 hover:text-white'
+                ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
+                : 'text-gray-400 hover:text-white'
                 }`}
         >
             {children}
