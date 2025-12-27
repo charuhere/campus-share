@@ -1,6 +1,8 @@
 # Dependencies
 node_modules/
 
+# Environment variables
+.env
 
 # Logs
 logs/
@@ -9,5 +11,3 @@ logs/
 # OS files
 .DS_Store
 Thumbs.db
-
-backend/.env
