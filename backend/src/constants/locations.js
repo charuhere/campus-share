@@ -67,7 +67,6 @@ export const ON_THE_WAY_STOPS = {
 };
 
 export const CAB_TYPES = [
-    { id: 'auto', name: 'Auto', maxSeats: 3, icon: '🛺' },
     { id: 'sedan', name: 'Sedan (Ola/Uber)', maxSeats: 4, icon: '🚗' },
     { id: 'suv', name: 'SUV', maxSeats: 6, icon: '🚙' },
 ];
