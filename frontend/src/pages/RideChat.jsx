@@ -43,7 +43,13 @@ function RideChat() {
                 });
 
                 socket.on('new-message', (message) => {
-                    setMessages((prev) => [...prev, message]);
+                    setMessages((prev) => {
+                        // Prevent duplicates
+                        if (prev.some(m => m._id === message._id)) {
+                            return prev;
+                        }
+                        return [...prev, message];
+                    });
                 });
 
                 socket.on('error', (error) => {
@@ -137,8 +143,8 @@ function RideChat() {
                                         <p className="text-xs text-gray-500 mb-1 ml-3">{msg.senderName}</p>
                                     )}
                                     <div className={`px-4 py-3 rounded-2xl ${isMe
-                                            ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-br-none'
-                                            : 'glass-card text-white rounded-bl-none'
+                                        ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-br-none'
+                                        : 'glass-card text-white rounded-bl-none'
                                         }`}>
                                         <p>{msg.content}</p>
                                         <p className={`text-xs mt-1 ${isMe ? 'text-white/70' : 'text-gray-500'}`}>

@@ -39,12 +39,6 @@ const userSchema = new mongoose.Schema({
         default: '',
     },
 
-    // Trusted users - list of user IDs this user trusts
-    trustedUsers: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-    }],
-
     // Stats
     ridesCreated: {
         type: Number,
