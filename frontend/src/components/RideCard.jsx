@@ -50,8 +50,8 @@ function RideCard({ ride, onJoin, onLeave, currentUserId }) {
 
                 {/* Seats Badge */}
                 <div className={`text-center px-3 py-2 rounded-xl ${isFull
-                        ? 'bg-red-500/20 text-red-400'
-                        : 'bg-green-500/20 text-green-400'
+                    ? 'bg-red-500/20 text-red-400'
+                    : 'bg-green-500/20 text-green-400'
                     }`}>
                     <div className="text-xl font-bold">
                         {ride.totalSeats - ride.participants.length}
@@ -66,7 +66,7 @@ function RideCard({ ride, onJoin, onLeave, currentUserId }) {
                     {ride.dropPoints.map((dp) => (
                         <span
                             key={dp.id}
-                            className="text-xs bg-purple-500/20 text-purple-300 px-2 py-1 rounded-full"
+                            className="text-xs bg-emerald-500/20 text-emerald-300 px-2 py-1 rounded-full"
                         >
                             📍 {dp.name}
                         </span>
@@ -99,7 +99,7 @@ function RideCard({ ride, onJoin, onLeave, currentUserId }) {
 
             {/* Creator */}
             <div className="flex items-center gap-2 mb-4 text-sm">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white text-sm font-bold">
+                <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white text-sm font-bold">
                     {ride.creator.name.charAt(0)}
                 </div>
                 <div>
@@ -164,7 +164,7 @@ function RideCard({ ride, onJoin, onLeave, currentUserId }) {
                 )}
 
                 {isCreator && (
-                    <div className="text-center py-3 rounded-xl bg-purple-500/20 text-purple-300">
+                    <div className="text-center py-3 rounded-xl bg-emerald-500/20 text-emerald-300">
                         ✨ Your Ride
                     </div>
                 )}

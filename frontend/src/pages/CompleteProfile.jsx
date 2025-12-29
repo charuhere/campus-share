@@ -107,7 +107,7 @@ function CompleteProfile() {
                                             key={h.id}
                                             type="button"
                                             onClick={() => selectHostel(h.name)}
-                                            className="w-full px-4 py-3 text-left text-white hover:bg-purple-500/20 transition-colors first:rounded-t-xl last:rounded-b-xl"
+                                            className="w-full px-4 py-3 text-left text-white hover:bg-emerald-500/20 transition-colors first:rounded-t-xl last:rounded-b-xl"
                                         >
                                             {h.name}
                                         </button>

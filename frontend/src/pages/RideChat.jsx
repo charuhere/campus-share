@@ -108,7 +108,7 @@ function RideChat() {
     if (loading) {
         return (
             <div className="min-h-screen flex items-center justify-center">
-                <div className="w-12 h-12 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin"></div>
+                <div className="w-12 h-12 border-4 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin"></div>
             </div>
         );
     }
@@ -175,7 +175,7 @@ function RideChat() {
                                         <p className="text-xs text-gray-500 mb-1 ml-3">{msg.senderName}</p>
                                     )}
                                     <div className={`px-4 py-3 rounded-2xl ${isMe
-                                        ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-br-none'
+                                        ? 'bg-gradient-to-r from-emerald-500 to-pink-500 text-white rounded-br-none'
                                         : 'glass-card text-white rounded-bl-none'
                                         }`}>
                                         <p>{msg.content}</p>

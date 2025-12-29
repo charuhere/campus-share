@@ -61,7 +61,7 @@ function Profile() {
     if (!profile) {
         return (
             <div className="min-h-screen flex items-center justify-center">
-                <div className="w-12 h-12 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin"></div>
+                <div className="w-12 h-12 border-4 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin"></div>
             </div>
         );
     }
@@ -71,7 +71,7 @@ function Profile() {
             {/* Profile Header */}
             <div className="glass-card p-8 text-center mb-8">
                 {/* Avatar */}
-                <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-4xl font-bold text-white">
+                <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-emerald-500 to-pink-500 flex items-center justify-center text-4xl font-bold text-white">
                     {profile.name.charAt(0).toUpperCase()}
                 </div>
 
@@ -80,7 +80,7 @@ function Profile() {
 
                 {/* Badges */}
                 <div className="flex justify-center gap-2 flex-wrap mb-4">
-                    <span className="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-sm">
+                    <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-sm">
                         🎓 VIT Student
                     </span>
                     <span className="px-3 py-1 rounded-full bg-green-500/20 text-green-300 text-sm">
@@ -91,7 +91,7 @@ function Profile() {
                 {/* Edit Button */}
                 <button
                     onClick={openEditModal}
-                    className="px-6 py-2 rounded-xl font-semibold bg-purple-500/20 text-purple-400 hover:bg-purple-500/30 transition-all"
+                    className="px-6 py-2 rounded-xl font-semibold bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-all"
                 >
                     ✏️ Edit Profile
                 </button>
@@ -109,7 +109,7 @@ function Profile() {
                     icon="🤝"
                     value={profile.ridesJoined}
                     label="Joined"
-                    gradient="from-purple-500 to-pink-500"
+                    gradient="from-emerald-500 to-pink-500"
                 />
                 <StatCard
                     icon="✅"
@@ -183,7 +183,7 @@ function Profile() {
                                                     setEditHostel(h.name);
                                                     setShowHostelDropdown(false);
                                                 }}
-                                                className="w-full px-4 py-2 text-left text-white text-sm hover:bg-purple-500/20 transition-colors"
+                                                className="w-full px-4 py-2 text-left text-white text-sm hover:bg-emerald-500/20 transition-colors"
                                             >
                                                 {h.name}
                                             </button>

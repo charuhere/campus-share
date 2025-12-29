@@ -121,7 +121,7 @@ function CreateRide() {
                 {[1, 2, 3].map((s) => (
                     <div
                         key={s}
-                        className={`w-12 h-1 rounded-full transition-all ${step >= s ? 'bg-gradient-to-r from-purple-500 to-pink-500' : 'bg-white/10'
+                        className={`w-12 h-1 rounded-full transition-all ${step >= s ? 'bg-gradient-to-r from-emerald-500 to-pink-500' : 'bg-white/10'
                             }`}
                     />
                 ))}
@@ -150,13 +150,13 @@ function CreateRide() {
                                 required
                             />
                             {showFromDropdown && filteredFromLocations.length > 0 && (
-                                <div className="absolute z-10 w-full mt-1 max-h-48 overflow-y-auto rounded-xl bg-slate-800 border border-slate-700 shadow-lg">
+                                <div className="absolute z-10 w-full mt-1 max-h-48 overflow-y-auto rounded-xl bg-neutral-800 border border-neutral-700 shadow-lg">
                                     {filteredFromLocations.slice(0, 8).map((loc) => (
                                         <button
                                             key={loc.id}
                                             type="button"
                                             onClick={() => selectFrom(loc)}
-                                            className="w-full px-4 py-3 text-left text-white hover:bg-purple-500/20 transition-colors"
+                                            className="w-full px-4 py-3 text-left text-white hover:bg-emerald-500/20 transition-colors"
                                         >
                                             {loc.name}
                                         </button>
@@ -182,13 +182,13 @@ function CreateRide() {
                                 required
                             />
                             {showToDropdown && filteredToLocations.length > 0 && (
-                                <div className="absolute z-10 w-full mt-1 max-h-48 overflow-y-auto rounded-xl bg-slate-800 border border-slate-700 shadow-lg">
+                                <div className="absolute z-10 w-full mt-1 max-h-48 overflow-y-auto rounded-xl bg-neutral-800 border border-neutral-700 shadow-lg">
                                     {filteredToLocations.slice(0, 8).map((loc) => (
                                         <button
                                             key={loc.id}
                                             type="button"
                                             onClick={() => selectTo(loc)}
-                                            className="w-full px-4 py-3 text-left text-white hover:bg-purple-500/20 transition-colors"
+                                            className="w-full px-4 py-3 text-left text-white hover:bg-emerald-500/20 transition-colors"
                                         >
                                             {loc.name} {loc.estimatedCost ? `(≈₹${loc.estimatedCost})` : ''}
                                         </button>
@@ -209,7 +209,7 @@ function CreateRide() {
                                                 type="button"
                                                 onClick={() => toggleDropPoint(dp)}
                                                 className={`p-3 rounded-xl text-left text-sm transition ${isSelected
-                                                    ? 'bg-purple-500/20 ring-1 ring-purple-500'
+                                                    ? 'bg-emerald-500/20 ring-1 ring-emerald-500'
                                                     : 'bg-white/5 hover:bg-white/10'
                                                     }`}
                                             >
@@ -265,9 +265,9 @@ function CreateRide() {
                                     max="6"
                                     value={maxPeople}
                                     onChange={(e) => setMaxPeople(parseInt(e.target.value))}
-                                    className="flex-1 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
+                                    className="flex-1 h-2 bg-neutral-700 rounded-lg appearance-none cursor-pointer accent-emerald-500"
                                 />
-                                <span className="text-2xl font-bold text-purple-400 w-10 text-center">{maxPeople}</span>
+                                <span className="text-2xl font-bold text-emerald-400 w-10 text-center">{maxPeople}</span>
                             </div>
                             <p className="text-gray-500 text-sm mt-1">You can close the ride anytime after creating</p>
                         </div>
@@ -333,7 +333,7 @@ function CreateRide() {
                             </div>
                             <div className="flex justify-between text-sm">
                                 <span className="text-gray-400">Max People</span>
-                                <span className="text-purple-400 font-semibold">{maxPeople}</span>
+                                <span className="text-emerald-400 font-semibold">{maxPeople}</span>
                             </div>
                             <div className="flex justify-between text-sm">
                                 <span className="text-gray-400">Drop Points</span>

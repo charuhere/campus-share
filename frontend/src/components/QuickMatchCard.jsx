@@ -22,7 +22,7 @@ function QuickMatchCard({ session, onJoin, joining }) {
     const isExpiringSoon = session.timeRemaining < 180; // Less than 3 mins
 
     return (
-        <div className="glass-card p-4 hover:border-purple-500/50 transition-all duration-300">
+        <div className="glass-card p-4 hover:border-emerald-500/50 transition-all duration-300">
             {/* Header */}
             <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-2">
@@ -34,7 +34,7 @@ function QuickMatchCard({ session, onJoin, joining }) {
                 </div>
 
                 {/* Time remaining badge */}
-                <div className={`px-2 py-1 rounded-lg text-xs font-medium ${isExpiringSoon ? 'bg-red-500/20 text-red-400' : 'bg-purple-500/20 text-purple-400'
+                <div className={`px-2 py-1 rounded-lg text-xs font-medium ${isExpiringSoon ? 'bg-red-500/20 text-red-400' : 'bg-emerald-500/20 text-emerald-400'
                     }`}>
                     ⏱️ {formatTimeRemaining(session.timeRemaining)}
                 </div>
@@ -58,8 +58,8 @@ function QuickMatchCard({ session, onJoin, joining }) {
 
                 {/* Status */}
                 <div className={`px-2 py-0.5 rounded-full text-xs ${session.status === 'matched'
-                        ? 'bg-green-500/20 text-green-400'
-                        : 'bg-blue-500/20 text-blue-400'
+                    ? 'bg-green-500/20 text-green-400'
+                    : 'bg-blue-500/20 text-blue-400'
                     }`}>
                     {session.status === 'matched' ? '✓ Matched' : '🔍 Searching'}
                 </div>
@@ -77,8 +77,8 @@ function QuickMatchCard({ session, onJoin, joining }) {
                 onClick={() => onJoin(session._id)}
                 disabled={joining || session.availableSpots <= 0}
                 className={`w-full py-2 rounded-xl font-semibold transition-all duration-300 ${session.availableSpots <= 0
-                        ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
-                        : 'btn-gradient text-white hover:scale-[1.02]'
+                    ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
+                    : 'btn-gradient text-white hover:scale-[1.02]'
                     }`}
             >
                 {joining ? (

@@ -77,7 +77,7 @@ function MyRides() {
             {/* Loading */}
             {loading && (
                 <div className="flex justify-center py-20">
-                    <div className="w-12 h-12 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin"></div>
+                    <div className="w-12 h-12 border-4 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin"></div>
                 </div>
             )}
 
@@ -127,7 +127,7 @@ function TabButton({ active, onClick, count, children }) {
         <button
             onClick={onClick}
             className={`px-6 py-3 rounded-xl font-medium transition flex items-center gap-2 ${active
-                ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
+                ? 'bg-gradient-to-r from-emerald-500 to-pink-500 text-white'
                 : 'text-gray-400 hover:text-white'
                 }`}
         >

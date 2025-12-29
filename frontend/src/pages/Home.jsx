@@ -96,7 +96,7 @@ function Home() {
             {/* Loading */}
             {loading && (
                 <div className="flex justify-center py-16">
-                    <div className="w-10 h-10 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin"></div>
+                    <div className="w-10 h-10 border-4 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin"></div>
                 </div>
             )}
 

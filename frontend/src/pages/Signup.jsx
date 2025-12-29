@@ -105,7 +105,7 @@ function Signup() {
                     {/* Login Link */}
                     <p className="text-center text-gray-400 text-sm mt-4">
                         Have an account?{' '}
-                        <Link to="/login" className="text-purple-400 hover:text-purple-300 font-medium">
+                        <Link to="/login" className="text-emerald-400 hover:text-emerald-300 font-medium">
                             Sign In
                         </Link>
                     </p>

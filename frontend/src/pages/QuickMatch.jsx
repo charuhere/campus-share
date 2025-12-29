@@ -332,7 +332,7 @@ function QuickMatch() {
                                 <p className="text-sm text-gray-400">Going to {activeSession.destination.name}</p>
                             </div>
                         </div>
-                        <div className={`px-3 py-1 rounded-lg font-mono font-bold ${timeRemaining < 60 ? 'bg-red-500/20 text-red-400' : 'bg-purple-500/20 text-purple-400'
+                        <div className={`px-3 py-1 rounded-lg font-mono font-bold ${timeRemaining < 60 ? 'bg-red-500/20 text-red-400' : 'bg-emerald-500/20 text-emerald-400'
                             }`}>
                             {formatTime(timeRemaining)}
                         </div>
@@ -343,7 +343,7 @@ function QuickMatch() {
                         <span>👥</span>
                         <span className="text-gray-300">
                             {activeSession.participantCount} people • You are
-                            <span className="text-purple-400 font-medium"> {activeSession.myNickname}</span>
+                            <span className="text-emerald-400 font-medium"> {activeSession.myNickname}</span>
                         </span>
                     </div>
 
@@ -351,7 +351,7 @@ function QuickMatch() {
                     <div className="flex gap-2 flex-wrap">
                         <button
                             onClick={() => setShowChat(!showChat)}
-                            className="flex-1 py-2 rounded-xl font-semibold bg-purple-500/20 text-purple-400 hover:bg-purple-500/30 transition-all"
+                            className="flex-1 py-2 rounded-xl font-semibold bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-all"
                         >
                             💬 {showChat ? 'Hide Chat' : 'Open Chat'}
                         </button>
@@ -391,11 +391,11 @@ function QuickMatch() {
                                 <div
                                     key={msg._id}
                                     className={`p-2 rounded-lg ${msg.senderNickname === activeSession.myNickname
-                                        ? 'bg-purple-500/20 ml-8'
-                                        : 'bg-slate-700/50 mr-8'
+                                        ? 'bg-emerald-500/20 ml-8'
+                                        : 'bg-neutral-700/50 mr-8'
                                         }`}
                                 >
-                                    <p className="text-xs text-purple-400 font-medium mb-1">
+                                    <p className="text-xs text-emerald-400 font-medium mb-1">
                                         {msg.senderNickname === activeSession.myNickname ? 'You' : msg.senderNickname}
                                     </p>
                                     <p className="text-white text-sm">{msg.content}</p>
@@ -467,7 +467,7 @@ function QuickMatch() {
                                 <p className="text-red-400">{locationError}</p>
                                 <button
                                     onClick={getCurrentLocation}
-                                    className="text-purple-400 text-sm underline mt-1"
+                                    className="text-emerald-400 text-sm underline mt-1"
                                 >
                                     Try again
                                 </button>
@@ -494,7 +494,7 @@ function QuickMatch() {
                     disabled={!location}
                 />
                 {showDestDropdown && filteredDestinations.length > 0 && (
-                    <div className="absolute z-10 left-4 right-4 mt-1 max-h-48 overflow-y-auto rounded-xl bg-slate-800 border border-slate-700 shadow-lg">
+                    <div className="absolute z-10 left-4 right-4 mt-1 max-h-48 overflow-y-auto rounded-xl bg-neutral-800 border border-neutral-700 shadow-lg">
                         {filteredDestinations.map((dest) => (
                             <button
                                 key={dest.id}
@@ -504,7 +504,7 @@ function QuickMatch() {
                                     setDestinationText(dest.name);
                                     setShowDestDropdown(false);
                                 }}
-                                className="w-full px-4 py-3 text-left text-white hover:bg-purple-500/20 transition-colors"
+                                className="w-full px-4 py-3 text-left text-white hover:bg-emerald-500/20 transition-colors"
                             >
                                 {dest.name}
                             </button>
@@ -523,9 +523,9 @@ function QuickMatch() {
                         max="6"
                         value={maxParticipants}
                         onChange={(e) => setMaxParticipants(parseInt(e.target.value))}
-                        className="flex-1 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
+                        className="flex-1 h-2 bg-neutral-700 rounded-lg appearance-none cursor-pointer accent-emerald-500"
                     />
-                    <span className="text-2xl font-bold text-purple-400 w-10 text-center">{maxParticipants}</span>
+                    <span className="text-2xl font-bold text-emerald-400 w-10 text-center">{maxParticipants}</span>
                 </div>
             </div>
 
@@ -534,7 +534,7 @@ function QuickMatch() {
                 <button
                     onClick={findNearby}
                     disabled={!location || loading}
-                    className="flex-1 py-3 rounded-xl font-semibold bg-slate-700 text-white hover:bg-slate-600 transition-all disabled:opacity-50"
+                    className="flex-1 py-3 rounded-xl font-semibold bg-neutral-700 text-white hover:bg-slate-600 transition-all disabled:opacity-50"
                 >
                     {loading ? '🔍 Searching...' : '🔍 Find Matches'}
                 </button>
