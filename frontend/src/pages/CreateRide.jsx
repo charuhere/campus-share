@@ -122,7 +122,7 @@ function CreateRide() {
                 {[1, 2, 3].map((s) => (
                     <div
                         key={s}
-                        className={`w-12 h-1 rounded-full transition-all ${step >= s ? 'bg-gradient-to-r from-emerald-500 to-pink-500' : 'bg-gray-100'
+                        className={`w-12 h-1 rounded-full transition-all ${step >= s ? 'bg-black' : 'bg-gray-200'
                             }`}
                     />
                 ))}
@@ -227,7 +227,7 @@ function CreateRide() {
                             type="button"
                             onClick={() => setStep(2)}
                             disabled={!fromText || !toText}
-                            className="w-full btn-gradient text-black py-4 rounded-xl font-semibold disabled:opacity-50"
+                            className="w-full bg-black hover:bg-gray-800 text-white py-4 rounded-xl font-semibold disabled:opacity-50"
                         >
                             Continue →
                         </button>
@@ -285,7 +285,7 @@ function CreateRide() {
                                 type="button"
                                 onClick={() => setStep(3)}
                                 disabled={!selectedDateTime}
-                                className="flex-1 btn-gradient text-black py-4 rounded-xl font-semibold disabled:opacity-50"
+                                className="flex-1 bg-black hover:bg-gray-800 text-white py-4 rounded-xl font-semibold disabled:opacity-50"
                             >
                                 Continue →
                             </button>
@@ -353,7 +353,7 @@ function CreateRide() {
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="flex-1 btn-gradient text-black py-4 rounded-xl font-semibold disabled:opacity-50"
+                                className="flex-1 bg-black hover:bg-gray-800 text-white py-4 rounded-xl font-semibold disabled:opacity-50"
                             >
                                 {loading ? 'Creating...' : 'Create Ride ✨'}
                             </button>
