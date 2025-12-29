@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import { CAMPUS_LOCATIONS, DESTINATIONS, CAB_TYPES, ON_THE_WAY_STOPS } from '../constants/locations';
 import api from '../services/api';
 import toast from 'react-hot-toast';
@@ -18,8 +20,7 @@ function CreateRide() {
     const [toId, setToId] = useState('');
     const [showToDropdown, setShowToDropdown] = useState(false);
 
-    const [date, setDate] = useState('');
-    const [time, setTime] = useState('');
+    const [selectedDateTime, setSelectedDateTime] = useState(null);
     const [cabTypeId, setCabTypeId] = useState('');
     const [maxPeople, setMaxPeople] = useState(4);
     const [estimatedCost, setEstimatedCost] = useState('');
@@ -76,20 +77,19 @@ function CreateRide() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!fromText || !toText || !date || !time || !cabTypeId || !estimatedCost) {
+        if (!fromText || !toText || !selectedDateTime || !cabTypeId || !estimatedCost) {
             toast.error('Please fill all required fields');
             return;
         }
 
         try {
             setLoading(true);
-            const dateTime = new Date(`${date}T${time}`);
 
             await api.post('/rides', {
                 from: { id: fromId || 'custom', name: fromText },
                 to: { id: toId || 'custom', name: toText },
                 dropPoints: selectedDropPoints,
-                dateTime: dateTime.toISOString(),
+                dateTime: selectedDateTime.toISOString(),
                 cabType: { id: cabTypeId, name: selectedCab.name, maxSeats: selectedCab.maxSeats },
                 totalSeats: maxPeople,
                 estimatedCost: parseInt(estimatedCost),
@@ -105,7 +105,9 @@ function CreateRide() {
         }
     };
 
-    const today = new Date().toISOString().split('T')[0];
+    // Minimum selectable date/time is now
+    const minDateTime = new Date();
+
 
     return (
         <div className="max-w-2xl mx-auto px-4 py-8">
@@ -237,28 +239,21 @@ function CreateRide() {
                     <div className="space-y-6">
                         <h2 className="text-xl font-semibold text-white mb-4">🕐 When & How?</h2>
 
-                        <div className="grid grid-cols-2 gap-4">
-                            <div>
-                                <label className="block text-gray-300 text-sm mb-2">Date</label>
-                                <input
-                                    type="date"
-                                    value={date}
-                                    min={today}
-                                    onChange={(e) => setDate(e.target.value)}
-                                    className="input-modern text-white w-full"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-gray-300 text-sm mb-2">Time</label>
-                                <input
-                                    type="time"
-                                    value={time}
-                                    onChange={(e) => setTime(e.target.value)}
-                                    className="input-modern text-white w-full"
-                                    required
-                                />
-                            </div>
+                        <div>
+                            <label className="block text-gray-300 text-sm mb-2">Date & Time</label>
+                            <DatePicker
+                                selected={selectedDateTime}
+                                onChange={(date) => setSelectedDateTime(date)}
+                                showTimeSelect
+                                timeFormat="HH:mm"
+                                timeIntervals={15}
+                                dateFormat="MMMM d, yyyy h:mm aa"
+                                minDate={minDateTime}
+                                placeholderText="Select date and time"
+                                className="input-modern text-white w-full cursor-pointer"
+                                calendarClassName="dark-calendar"
+                                required
+                            />
                         </div>
 
                         <div>
@@ -310,7 +305,7 @@ function CreateRide() {
                             <button
                                 type="button"
                                 onClick={() => setStep(3)}
-                                disabled={!date || !time || !cabTypeId}
+                                disabled={!selectedDateTime || !cabTypeId}
                                 className="flex-1 btn-gradient text-white py-4 rounded-xl font-semibold disabled:opacity-50"
                             >
                                 Continue →
@@ -356,7 +351,7 @@ function CreateRide() {
                             </div>
                             <div className="flex justify-between text-sm">
                                 <span className="text-gray-400">When</span>
-                                <span className="text-white">{date} at {time}</span>
+                                <span className="text-white">{selectedDateTime?.toLocaleString()}</span>
                             </div>
                             <div className="flex justify-between text-sm">
                                 <span className="text-gray-400">Cab</span>
