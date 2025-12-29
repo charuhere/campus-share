@@ -34,11 +34,11 @@ const rideSchema = new mongoose.Schema({
         required: true,
     },
 
-    // Cab type
+    // Cab type (optional - for backward compatibility)
     cabType: {
-        id: { type: String, required: true },
-        name: { type: String, required: true },
-        maxSeats: { type: Number, required: true },
+        id: { type: String, default: 'auto' },
+        name: { type: String, default: 'Auto/Cab' },
+        maxSeats: { type: Number, default: 6 },
     },
 
     // Seats
