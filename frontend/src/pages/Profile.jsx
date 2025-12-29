@@ -1,9 +1,62 @@
-// Profile Page - Premium Design
+// Profile Page - Premium Design with Edit Feature
 
+import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import { CAMPUS_LOCATIONS } from '../constants/locations';
+import toast from 'react-hot-toast';
 
 function Profile() {
-    const { profile } = useAuth();
+    const { profile, updateProfile } = useAuth();
+    const [isEditing, setIsEditing] = useState(false);
+    const [editName, setEditName] = useState('');
+    const [editHostel, setEditHostel] = useState('');
+    const [editDepartment, setEditDepartment] = useState('');
+    const [showHostelDropdown, setShowHostelDropdown] = useState(false);
+    const [saving, setSaving] = useState(false);
+
+    // Get hostel options from campus locations
+    const hostelOptions = CAMPUS_LOCATIONS.filter(loc =>
+        loc.id.includes('h-') || loc.id.includes('lh-')
+    );
+
+    // Filter hostels based on input
+    const filteredHostels = hostelOptions.filter(h =>
+        h.name.toLowerCase().includes(editHostel.toLowerCase())
+    );
+
+    const openEditModal = () => {
+        setEditName(profile.name);
+        setEditHostel(profile.hostel || '');
+        setEditDepartment(profile.department || '');
+        setIsEditing(true);
+    };
+
+    const closeEditModal = () => {
+        setIsEditing(false);
+        setShowHostelDropdown(false);
+    };
+
+    const handleSave = async () => {
+        if (!editName.trim()) {
+            toast.error('Name is required');
+            return;
+        }
+
+        try {
+            setSaving(true);
+            await updateProfile({
+                name: editName.trim(),
+                hostel: editHostel,
+                department: editDepartment,
+            });
+            toast.success('Profile updated!');
+            closeEditModal();
+        } catch (error) {
+            toast.error('Failed to update profile');
+        } finally {
+            setSaving(false);
+        }
+    };
 
     if (!profile) {
         return (
@@ -26,7 +79,7 @@ function Profile() {
                 <p className="text-gray-400 mb-4">{profile.email}</p>
 
                 {/* Badges */}
-                <div className="flex justify-center gap-2 flex-wrap">
+                <div className="flex justify-center gap-2 flex-wrap mb-4">
                     <span className="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-sm">
                         🎓 VIT Student
                     </span>
@@ -34,6 +87,14 @@ function Profile() {
                         ✓ Verified
                     </span>
                 </div>
+
+                {/* Edit Button */}
+                <button
+                    onClick={openEditModal}
+                    className="px-6 py-2 rounded-xl font-semibold bg-purple-500/20 text-purple-400 hover:bg-purple-500/30 transition-all"
+                >
+                    ✏️ Edit Profile
+                </button>
             </div>
 
             {/* Stats Grid */}
@@ -60,8 +121,7 @@ function Profile() {
 
             {/* Info Cards */}
             <div className="space-y-4">
-                <InfoCard label="Phone" value={profile.phone} icon="📱" />
-                <InfoCard label="Hostel" value={profile.hostel} icon="🏠" />
+                <InfoCard label="Hostel" value={profile.hostel || 'Not set'} icon="🏠" />
                 <InfoCard label="Department" value={profile.department || 'Not set'} icon="📚" />
                 <InfoCard
                     label="Member Since"
@@ -73,6 +133,99 @@ function Profile() {
                     icon="📅"
                 />
             </div>
+
+            {/* Edit Modal */}
+            {isEditing && (
+                <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+                    <div className="glass-card p-6 w-full max-w-md">
+                        <h2 className="text-xl font-bold text-white mb-6">Edit Profile</h2>
+
+                        <div className="space-y-4">
+                            {/* Name */}
+                            <div>
+                                <label className="block text-gray-300 text-sm mb-2">
+                                    Full Name *
+                                </label>
+                                <input
+                                    type="text"
+                                    value={editName}
+                                    onChange={(e) => setEditName(e.target.value)}
+                                    placeholder="Your full name"
+                                    className="input-modern text-white placeholder-gray-500 w-full"
+                                />
+                            </div>
+
+                            {/* Hostel Combobox */}
+                            <div className="relative">
+                                <label className="block text-gray-300 text-sm mb-2">
+                                    Hostel
+                                </label>
+                                <input
+                                    type="text"
+                                    value={editHostel}
+                                    onChange={(e) => {
+                                        setEditHostel(e.target.value);
+                                        setShowHostelDropdown(true);
+                                    }}
+                                    onFocus={() => setShowHostelDropdown(true)}
+                                    placeholder="Type or select your hostel"
+                                    className="input-modern text-white placeholder-gray-500 w-full"
+                                />
+
+                                {/* Dropdown */}
+                                {showHostelDropdown && filteredHostels.length > 0 && (
+                                    <div className="absolute z-10 w-full mt-1 max-h-40 overflow-y-auto rounded-xl bg-slate-800 border border-slate-700 shadow-lg">
+                                        {filteredHostels.slice(0, 5).map((h) => (
+                                            <button
+                                                key={h.id}
+                                                type="button"
+                                                onClick={() => {
+                                                    setEditHostel(h.name);
+                                                    setShowHostelDropdown(false);
+                                                }}
+                                                className="w-full px-4 py-2 text-left text-white text-sm hover:bg-purple-500/20 transition-colors"
+                                            >
+                                                {h.name}
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Department */}
+                            <div>
+                                <label className="block text-gray-300 text-sm mb-2">
+                                    Department
+                                </label>
+                                <input
+                                    type="text"
+                                    value={editDepartment}
+                                    onChange={(e) => setEditDepartment(e.target.value)}
+                                    placeholder="e.g., CSE, ECE, MECH"
+                                    className="input-modern text-white placeholder-gray-500 w-full"
+                                />
+                            </div>
+                        </div>
+
+                        {/* Modal Actions */}
+                        <div className="flex gap-3 mt-6">
+                            <button
+                                onClick={closeEditModal}
+                                className="flex-1 py-3 rounded-xl font-semibold bg-slate-700 text-white hover:bg-slate-600 transition-all"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleSave}
+                                disabled={saving}
+                                className="flex-1 py-3 rounded-xl font-semibold btn-gradient text-white disabled:opacity-50"
+                            >
+                                {saving ? 'Saving...' : 'Save Changes'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

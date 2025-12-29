@@ -119,6 +119,11 @@ export const joinRide = async (req, res) => {
             return res.status(400).json({ error: 'No seats available' });
         }
 
+        // Check if ride is closed by creator
+        if (ride.isClosed) {
+            return res.status(400).json({ error: 'Room is closed' });
+        }
+
         // Check if already joined
         const alreadyJoined = ride.participants.some(
             p => p.user.toString() === req.user._id.toString()
@@ -245,5 +250,34 @@ export const getJoinedRides = async (req, res) => {
     } catch (error) {
         console.error('Get joined rides error:', error);
         res.status(500).json({ error: 'Failed to get joined rides' });
+    }
+};
+
+// Close/reopen a ride (only creator can close)
+export const closeRide = async (req, res) => {
+    try {
+        const ride = await Ride.findById(req.params.id);
+
+        if (!ride) {
+            return res.status(404).json({ error: 'Ride not found' });
+        }
+
+        // Only creator can close
+        if (ride.creator.toString() !== req.user._id.toString()) {
+            return res.status(403).json({ error: 'Only the creator can close this ride' });
+        }
+
+        // Toggle isClosed
+        ride.isClosed = !ride.isClosed;
+        await ride.save();
+
+        res.json({
+            message: ride.isClosed ? 'Room closed' : 'Room reopened',
+            isClosed: ride.isClosed
+        });
+
+    } catch (error) {
+        console.error('Close ride error:', error);
+        res.status(500).json({ error: 'Failed to close ride' });
     }
 };

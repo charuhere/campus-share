@@ -61,12 +61,20 @@ function Home() {
                     <h1 className="text-3xl font-bold gradient-text">Available Rides</h1>
                     <p className="text-gray-400 text-sm">Find rides posted by fellow students</p>
                 </div>
-                <Link
-                    to="/create-ride"
-                    className="btn-gradient px-6 py-3 rounded-xl text-white font-semibold text-center"
-                >
-                    ➕ Create Ride
-                </Link>
+                <div className="flex gap-3">
+                    <Link
+                        to="/quick-match"
+                        className="bg-gradient-to-r from-yellow-500 to-orange-500 px-6 py-3 rounded-xl text-white font-semibold text-center hover:scale-105 transition-transform shadow-lg shadow-orange-500/25"
+                    >
+                        ⚡ Quick Match
+                    </Link>
+                    <Link
+                        to="/create-ride"
+                        className="btn-gradient px-6 py-3 rounded-xl text-white font-semibold text-center"
+                    >
+                        ➕ Create Ride
+                    </Link>
+                </div>
             </div>
 
             {/* Destination Filter */}

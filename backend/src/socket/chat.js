@@ -5,6 +5,8 @@ import { getFirebaseAdmin } from '../config/firebase.js';
 import User from '../models/User.js';
 import Message from '../models/Message.js';
 import Ride from '../models/Ride.js';
+import QuickMatchSession from '../models/QuickMatchSession.js';
+import QuickMatchMessage from '../models/QuickMatchMessage.js';
 
 let io;
 
@@ -49,6 +51,8 @@ export function initializeSocket(server) {
     io.on('connection', (socket) => {
         console.log(`User connected: ${socket.user.name}`);
 
+        // ===== RIDE CHAT (Planned Rides) =====
+
         // Join a ride's chat room
         socket.on('join-ride', async (rideId) => {
             try {
@@ -90,7 +94,7 @@ export function initializeSocket(server) {
             console.log(`${socket.user.name} left ride-${rideId}`);
         });
 
-        // Send a message
+        // Send a message (Ride chat)
         socket.on('send-message', async ({ rideId, content }) => {
             try {
                 if (!content || !content.trim()) {
@@ -119,9 +123,153 @@ export function initializeSocket(server) {
             }
         });
 
+        // ===== QUICK MATCH CHAT (Temporary Sessions) =====
+
+        // Join a Quick Match session's chat room
+        socket.on('join-quick-match', async (sessionId) => {
+            try {
+                const session = await QuickMatchSession.findById(sessionId);
+
+                if (!session) {
+                    socket.emit('qm-error', 'Session not found');
+                    return;
+                }
+
+                // Check if session is expired
+                if (session.expiresAt < new Date()) {
+                    socket.emit('qm-error', 'Session has expired');
+                    return;
+                }
+
+                // Check if user is creator or participant
+                const isCreator = session.creator.toString() === socket.user._id.toString();
+                const isParticipant = session.participants.some(
+                    p => p.user.toString() === socket.user._id.toString()
+                );
+
+                if (!isCreator && !isParticipant) {
+                    socket.emit('qm-error', 'You are not in this Quick Match session');
+                    return;
+                }
+
+                // Get user's nickname
+                let nickname;
+                if (isCreator) {
+                    nickname = session.creatorNickname;
+                } else {
+                    const participant = session.participants.find(
+                        p => p.user.toString() === socket.user._id.toString()
+                    );
+                    nickname = participant?.nickname;
+                }
+
+                // Store nickname on socket for later use
+                socket.qmNickname = nickname;
+                socket.qmSessionId = sessionId;
+
+                // Join the room
+                socket.join(`qm-${sessionId}`);
+                console.log(`${nickname} joined Quick Match session ${sessionId}`);
+
+                // Send recent messages (privacy: only nicknames, not real names)
+                const messages = await QuickMatchMessage.find({ session: sessionId })
+                    .select('senderNickname content createdAt')
+                    .sort({ createdAt: 1 })
+                    .limit(30);
+
+                socket.emit('qm-previous-messages', messages);
+
+                // Notify others that someone joined
+                socket.to(`qm-${sessionId}`).emit('qm-user-joined', { nickname });
+
+            } catch (error) {
+                console.error('Join Quick Match error:', error);
+                socket.emit('qm-error', 'Failed to join Quick Match chat');
+            }
+        });
+
+        // Leave a Quick Match session's chat room
+        socket.on('leave-quick-match', (sessionId) => {
+            const nickname = socket.qmNickname;
+            socket.leave(`qm-${sessionId}`);
+            console.log(`${nickname || 'User'} left Quick Match session ${sessionId}`);
+
+            // Notify others
+            socket.to(`qm-${sessionId}`).emit('qm-user-left', { nickname });
+
+            // Clear session data from socket
+            socket.qmNickname = null;
+            socket.qmSessionId = null;
+        });
+
+        // Send a message (Quick Match - uses nicknames)
+        socket.on('send-qm-message', async ({ sessionId, content }) => {
+            try {
+                if (!content || !content.trim()) {
+                    return;
+                }
+
+                // Verify user is in this session
+                const session = await QuickMatchSession.findById(sessionId);
+                if (!session) {
+                    socket.emit('qm-error', 'Session not found');
+                    return;
+                }
+
+                // Check if expired
+                if (session.expiresAt < new Date()) {
+                    socket.emit('qm-error', 'Session has expired');
+                    return;
+                }
+
+                // Get user's nickname
+                const isCreator = session.creator.toString() === socket.user._id.toString();
+                let nickname;
+                if (isCreator) {
+                    nickname = session.creatorNickname;
+                } else {
+                    const participant = session.participants.find(
+                        p => p.user.toString() === socket.user._id.toString()
+                    );
+                    if (!participant) {
+                        socket.emit('qm-error', 'You are not in this session');
+                        return;
+                    }
+                    nickname = participant.nickname;
+                }
+
+                // Create message in database (with TTL auto-delete)
+                const message = await QuickMatchMessage.create({
+                    session: sessionId,
+                    sender: socket.user._id,
+                    senderNickname: nickname,
+                    content: content.trim().substring(0, 500), // Max 500 chars
+                });
+
+                // Broadcast to all in the room (with nickname, not real name)
+                io.to(`qm-${sessionId}`).emit('qm-new-message', {
+                    _id: message._id,
+                    session: sessionId,
+                    senderNickname: nickname,
+                    content: message.content,
+                    createdAt: message.createdAt,
+                });
+            } catch (error) {
+                console.error('Send QM message error:', error);
+                socket.emit('qm-error', 'Failed to send message');
+            }
+        });
+
         // Handle disconnect
         socket.on('disconnect', () => {
             console.log(`User disconnected: ${socket.user.name}`);
+
+            // Clean up Quick Match if needed
+            if (socket.qmSessionId) {
+                socket.to(`qm-${socket.qmSessionId}`).emit('qm-user-left', {
+                    nickname: socket.qmNickname
+                });
+            }
         });
     });
 
@@ -134,3 +282,4 @@ export function getIO() {
     }
     return io;
 }
+

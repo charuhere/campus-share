@@ -8,6 +8,7 @@ import {
     joinRide,
     leaveRide,
     cancelRide,
+    closeRide,
     getMyRides,
     getJoinedRides,
 } from '../controllers/rideController.js';
@@ -38,5 +39,8 @@ router.delete('/:id/leave', authMiddleware, leaveRide);
 
 // Cancel a ride (creator only)
 router.put('/:id/cancel', authMiddleware, cancelRide);
+
+// Close/reopen a ride (creator only - no more joins)
+router.post('/:id/close', authMiddleware, closeRide);
 
 export default router;

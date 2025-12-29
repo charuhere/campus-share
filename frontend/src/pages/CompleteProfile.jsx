@@ -8,30 +8,35 @@ import toast from 'react-hot-toast';
 
 function CompleteProfile() {
     const [name, setName] = useState('');
-    const [phone, setPhone] = useState('');
     const [hostel, setHostel] = useState('');
     const [department, setDepartment] = useState('');
     const [loading, setLoading] = useState(false);
+    const [showHostelDropdown, setShowHostelDropdown] = useState(false);
 
     const { completeProfile } = useAuth();
     const navigate = useNavigate();
 
+    // Get hostel options from campus locations
+    const hostelOptions = CAMPUS_LOCATIONS.filter(loc =>
+        loc.id.includes('h-') || loc.id.includes('lh-')
+    );
+
+    // Filter hostels based on input
+    const filteredHostels = hostelOptions.filter(h =>
+        h.name.toLowerCase().includes(hostel.toLowerCase())
+    );
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!name || !phone || !hostel) {
-            toast.error('Please fill all required fields');
-            return;
-        }
-
-        if (phone.length !== 10) {
-            toast.error('Enter a valid 10-digit phone number');
+        if (!name.trim()) {
+            toast.error('Please enter your name');
             return;
         }
 
         try {
             setLoading(true);
-            await completeProfile({ name, phone, hostel, department });
+            await completeProfile({ name: name.trim(), hostel, department });
             toast.success('Profile completed!');
             navigate('/');
         } catch (error) {
@@ -39,6 +44,11 @@ function CompleteProfile() {
         } finally {
             setLoading(false);
         }
+    };
+
+    const selectHostel = (hostelName) => {
+        setHostel(hostelName);
+        setShowHostelDropdown(false);
     };
 
     return (
@@ -72,37 +82,38 @@ function CompleteProfile() {
                             />
                         </div>
 
-                        <div>
+                        {/* Hostel Combobox - Optional */}
+                        <div className="relative">
                             <label className="block text-gray-300 text-sm mb-2">
-                                Phone Number *
+                                Hostel (Optional)
                             </label>
                             <input
-                                type="tel"
-                                value={phone}
-                                onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
-                                placeholder="10-digit number"
-                                className="input-modern text-white placeholder-gray-500 w-full"
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <label className="block text-gray-300 text-sm mb-2">
-                                Hostel *
-                            </label>
-                            <select
+                                type="text"
                                 value={hostel}
-                                onChange={(e) => setHostel(e.target.value)}
-                                className="input-modern text-white w-full"
-                                required
-                            >
-                                <option value="" className="bg-gray-900">Select your hostel</option>
-                                {CAMPUS_LOCATIONS.filter(loc => loc.id.includes('h-')).map((loc) => (
-                                    <option key={loc.id} value={loc.name} className="bg-gray-900">
-                                        {loc.name}
-                                    </option>
-                                ))}
-                            </select>
+                                onChange={(e) => {
+                                    setHostel(e.target.value);
+                                    setShowHostelDropdown(true);
+                                }}
+                                onFocus={() => setShowHostelDropdown(true)}
+                                placeholder="Type or select your hostel"
+                                className="input-modern text-white placeholder-gray-500 w-full"
+                            />
+
+                            {/* Dropdown */}
+                            {showHostelDropdown && filteredHostels.length > 0 && (
+                                <div className="absolute z-10 w-full mt-1 max-h-48 overflow-y-auto rounded-xl bg-slate-800 border border-slate-700 shadow-lg">
+                                    {filteredHostels.map((h) => (
+                                        <button
+                                            key={h.id}
+                                            type="button"
+                                            onClick={() => selectHostel(h.name)}
+                                            className="w-full px-4 py-3 text-left text-white hover:bg-purple-500/20 transition-colors first:rounded-t-xl last:rounded-b-xl"
+                                        >
+                                            {h.name}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
                         </div>
 
                         <div>

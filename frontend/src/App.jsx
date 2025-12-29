@@ -18,6 +18,7 @@ import CreateRide from './pages/CreateRide';
 import MyRides from './pages/MyRides';
 import Profile from './pages/Profile';
 import RideChat from './pages/RideChat';
+import QuickMatch from './pages/QuickMatch';
 
 function App() {
   return (
@@ -73,6 +74,11 @@ function App() {
               <Route path="/ride/:rideId/chat" element={
                 <ProtectedRoute>
                   <RideChat />
+                </ProtectedRoute>
+              } />
+              <Route path="/quick-match" element={
+                <ProtectedRoute>
+                  <QuickMatch />
                 </ProtectedRoute>
               } />
 

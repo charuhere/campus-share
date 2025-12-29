@@ -20,13 +20,13 @@ export const register = async (req, res) => {
             return res.status(400).json({ error: 'Only VIT student emails allowed' });
         }
 
-        // Create new user
+        // Create new user (only name is required)
         const user = await User.create({
             firebaseUid: uid,
             email,
             name,
-            phone,
-            hostel,
+            phone: phone || '',
+            hostel: hostel || '',
             department: department || '',
         });
 

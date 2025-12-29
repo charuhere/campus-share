@@ -84,6 +84,12 @@ const rideSchema = new mongoose.Schema({
         default: '',
     },
 
+    // Manually closed by creator (no more joins allowed)
+    isClosed: {
+        type: Boolean,
+        default: false,
+    },
+
 }, {
     timestamps: true,
 });

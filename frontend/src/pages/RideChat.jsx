@@ -17,8 +17,11 @@ function RideChat() {
     const [ride, setRide] = useState(null);
     const [loading, setLoading] = useState(true);
     const [connected, setConnected] = useState(false);
+    const [isClosed, setIsClosed] = useState(false);
 
     const messagesEndRef = useRef(null);
+
+    const isCreator = ride && profile && ride.creator._id === profile._id;
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -33,6 +36,7 @@ function RideChat() {
             try {
                 const response = await api.get(`/rides/${rideId}`);
                 setRide(response.data.ride);
+                setIsClosed(response.data.ride.isClosed || false);
 
                 const socket = await connectSocket();
                 socket.emit('join-ride', rideId);
@@ -76,6 +80,16 @@ function RideChat() {
         };
     }, [rideId, navigate]);
 
+    const closeRoom = async () => {
+        try {
+            const response = await api.post(`/rides/${rideId}/close`);
+            setIsClosed(response.data.isClosed);
+            toast.success(response.data.message);
+        } catch (error) {
+            toast.error('Failed to close room');
+        }
+    };
+
     const handleSend = (e) => {
         e.preventDefault();
         if (!newMessage.trim()) return;
@@ -105,21 +119,39 @@ function RideChat() {
             <div className="glass-card rounded-none border-0 border-b border-white/10 p-4">
                 <div className="max-w-4xl mx-auto flex items-center justify-between">
                     <div>
-                        <h2 className="text-lg font-semibold text-white">
+                        <h2 className="text-lg font-semibold text-white flex items-center gap-2">
                             {ride?.from.name} → {ride?.to.name}
+                            {isClosed && (
+                                <span className="px-2 py-0.5 text-xs rounded-full bg-orange-500/20 text-orange-400">
+                                    Room Closed
+                                </span>
+                            )}
                         </h2>
                         <p className="text-gray-400 text-sm flex items-center gap-2">
-                            <span>{ride?.participants.length} riders</span>
+                            <span>{ride?.participants.length}/{ride?.totalSeats} riders</span>
                             <span className={`w-2 h-2 rounded-full ${connected ? 'bg-green-500' : 'bg-red-500'}`}></span>
                             <span className="text-xs">{connected ? 'Connected' : 'Disconnected'}</span>
                         </p>
                     </div>
-                    <button
-                        onClick={() => navigate(-1)}
-                        className="text-gray-400 hover:text-white transition px-4 py-2 rounded-lg bg-white/5"
-                    >
-                        ← Back
-                    </button>
+                    <div className="flex items-center gap-2">
+                        {isCreator && (
+                            <button
+                                onClick={closeRoom}
+                                className={`px-4 py-2 rounded-lg font-semibold transition ${isClosed
+                                        ? 'bg-green-500/20 text-green-400 hover:bg-green-500/30'
+                                        : 'bg-orange-500/20 text-orange-400 hover:bg-orange-500/30'
+                                    }`}
+                            >
+                                {isClosed ? '🔓 Reopen' : '🔒 Close Room'}
+                            </button>
+                        )}
+                        <button
+                            onClick={() => navigate(-1)}
+                            className="text-gray-400 hover:text-white transition px-4 py-2 rounded-lg bg-white/5"
+                        >
+                            ← Back
+                        </button>
+                    </div>
                 </div>
             </div>
 

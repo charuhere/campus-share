@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 // Import routes
 import authRoutes from './routes/authRoutes.js';
 import rideRoutes from './routes/rideRoutes.js';
+import quickMatchRoutes from './routes/quickMatchRoutes.js';
 
 const app = express();
 
@@ -44,6 +45,7 @@ app.get('/health', (req, res) => {
 // API ROUTES
 app.use('/api/auth', authRoutes);
 app.use('/api/rides', rideRoutes);
+app.use('/api/quick-match', quickMatchRoutes);
 
 // ERROR HANDLING
 app.use((err, req, res, next) => {

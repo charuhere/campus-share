@@ -26,12 +26,12 @@ const userSchema = new mongoose.Schema({
 
     phone: {
         type: String,
-        required: true,
+        default: '',
     },
 
     hostel: {
         type: String,
-        required: true,
+        default: '',
     },
 
     department: {

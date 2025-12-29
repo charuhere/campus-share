@@ -1,4 +1,4 @@
-// Create Ride - Premium Design
+// Create Ride - Premium Design with Combobox Inputs
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -8,11 +8,20 @@ import toast from 'react-hot-toast';
 
 function CreateRide() {
     const [step, setStep] = useState(1);
+
+    // Location inputs (can be typed or selected)
+    const [fromText, setFromText] = useState('');
     const [fromId, setFromId] = useState('');
+    const [showFromDropdown, setShowFromDropdown] = useState(false);
+
+    const [toText, setToText] = useState('');
     const [toId, setToId] = useState('');
+    const [showToDropdown, setShowToDropdown] = useState(false);
+
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
     const [cabTypeId, setCabTypeId] = useState('');
+    const [maxPeople, setMaxPeople] = useState(4);
     const [estimatedCost, setEstimatedCost] = useState('');
     const [notes, setNotes] = useState('');
     const [selectedDropPoints, setSelectedDropPoints] = useState([]);
@@ -20,16 +29,43 @@ function CreateRide() {
 
     const navigate = useNavigate();
 
-    const selectedFrom = CAMPUS_LOCATIONS.find(loc => loc.id === fromId);
-    const selectedTo = DESTINATIONS.find(dest => dest.id === toId);
+    // Filter locations based on input
+    const filteredFromLocations = CAMPUS_LOCATIONS.filter(loc =>
+        loc.name.toLowerCase().includes(fromText.toLowerCase())
+    );
+
+    // Combine destinations and campus locations for "to" field
+    const allToLocations = [...DESTINATIONS, ...CAMPUS_LOCATIONS];
+    const filteredToLocations = allToLocations.filter(loc =>
+        loc.name.toLowerCase().includes(toText.toLowerCase())
+    );
+
+    const selectedFrom = CAMPUS_LOCATIONS.find(loc => loc.id === fromId) ||
+        (fromText ? { id: 'custom', name: fromText } : null);
+    const selectedTo = DESTINATIONS.find(dest => dest.id === toId) ||
+        CAMPUS_LOCATIONS.find(loc => loc.id === toId) ||
+        (toText ? { id: 'custom', name: toText, estimatedCost: 0 } : null);
     const selectedCab = CAB_TYPES.find(cab => cab.id === cabTypeId);
     const availableDropPoints = toId ? (ON_THE_WAY_STOPS[toId] || []) : [];
 
     useEffect(() => {
-        if (selectedTo) {
+        if (selectedTo?.estimatedCost) {
             setEstimatedCost(selectedTo.estimatedCost.toString());
         }
     }, [toId]);
+
+    const selectFrom = (loc) => {
+        setFromId(loc.id);
+        setFromText(loc.name);
+        setShowFromDropdown(false);
+    };
+
+    const selectTo = (loc) => {
+        setToId(loc.id);
+        setToText(loc.name);
+        setShowToDropdown(false);
+        setSelectedDropPoints([]);
+    };
 
     const toggleDropPoint = (dp) => {
         setSelectedDropPoints(prev => {
@@ -40,7 +76,7 @@ function CreateRide() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!fromId || !toId || !date || !time || !cabTypeId || !estimatedCost) {
+        if (!fromText || !toText || !date || !time || !cabTypeId || !estimatedCost) {
             toast.error('Please fill all required fields');
             return;
         }
@@ -50,12 +86,12 @@ function CreateRide() {
             const dateTime = new Date(`${date}T${time}`);
 
             await api.post('/rides', {
-                from: { id: fromId, name: selectedFrom.name },
-                to: { id: toId, name: selectedTo.name },
+                from: { id: fromId || 'custom', name: fromText },
+                to: { id: toId || 'custom', name: toText },
                 dropPoints: selectedDropPoints,
                 dateTime: dateTime.toISOString(),
                 cabType: { id: cabTypeId, name: selectedCab.name, maxSeats: selectedCab.maxSeats },
-                totalSeats: selectedCab.maxSeats,
+                totalSeats: maxPeople,
                 estimatedCost: parseInt(estimatedCost),
                 notes,
             });
@@ -96,36 +132,68 @@ function CreateRide() {
                     <div className="space-y-6">
                         <h2 className="text-xl font-semibold text-white mb-4">📍 Where are you going?</h2>
 
-                        <div>
+                        {/* From - Combobox */}
+                        <div className="relative">
                             <label className="block text-gray-300 text-sm mb-2">Pickup Location</label>
-                            <select
-                                value={fromId}
-                                onChange={(e) => setFromId(e.target.value)}
+                            <input
+                                type="text"
+                                value={fromText}
+                                onChange={(e) => {
+                                    setFromText(e.target.value);
+                                    setFromId('');
+                                    setShowFromDropdown(true);
+                                }}
+                                onFocus={() => setShowFromDropdown(true)}
+                                placeholder="Type or select pickup location"
                                 className="input-modern text-white w-full"
                                 required
-                            >
-                                <option value="" className="bg-gray-900">Select pickup</option>
-                                {CAMPUS_LOCATIONS.map((loc) => (
-                                    <option key={loc.id} value={loc.id} className="bg-gray-900">{loc.name}</option>
-                                ))}
-                            </select>
+                            />
+                            {showFromDropdown && filteredFromLocations.length > 0 && (
+                                <div className="absolute z-10 w-full mt-1 max-h-48 overflow-y-auto rounded-xl bg-slate-800 border border-slate-700 shadow-lg">
+                                    {filteredFromLocations.slice(0, 8).map((loc) => (
+                                        <button
+                                            key={loc.id}
+                                            type="button"
+                                            onClick={() => selectFrom(loc)}
+                                            className="w-full px-4 py-3 text-left text-white hover:bg-purple-500/20 transition-colors"
+                                        >
+                                            {loc.name}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
                         </div>
 
-                        <div>
+                        {/* To - Combobox */}
+                        <div className="relative">
                             <label className="block text-gray-300 text-sm mb-2">Final Destination</label>
-                            <select
-                                value={toId}
-                                onChange={(e) => { setToId(e.target.value); setSelectedDropPoints([]); }}
+                            <input
+                                type="text"
+                                value={toText}
+                                onChange={(e) => {
+                                    setToText(e.target.value);
+                                    setToId('');
+                                    setShowToDropdown(true);
+                                }}
+                                onFocus={() => setShowToDropdown(true)}
+                                placeholder="Type or select destination"
                                 className="input-modern text-white w-full"
                                 required
-                            >
-                                <option value="" className="bg-gray-900">Select destination</option>
-                                {DESTINATIONS.map((dest) => (
-                                    <option key={dest.id} value={dest.id} className="bg-gray-900">
-                                        {dest.name} (≈₹{dest.estimatedCost})
-                                    </option>
-                                ))}
-                            </select>
+                            />
+                            {showToDropdown && filteredToLocations.length > 0 && (
+                                <div className="absolute z-10 w-full mt-1 max-h-48 overflow-y-auto rounded-xl bg-slate-800 border border-slate-700 shadow-lg">
+                                    {filteredToLocations.slice(0, 8).map((loc) => (
+                                        <button
+                                            key={loc.id}
+                                            type="button"
+                                            onClick={() => selectTo(loc)}
+                                            className="w-full px-4 py-3 text-left text-white hover:bg-purple-500/20 transition-colors"
+                                        >
+                                            {loc.name} {loc.estimatedCost ? `(≈₹${loc.estimatedCost})` : ''}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
                         </div>
 
                         {availableDropPoints.length > 0 && (
@@ -140,8 +208,8 @@ function CreateRide() {
                                                 type="button"
                                                 onClick={() => toggleDropPoint(dp)}
                                                 className={`p-3 rounded-xl text-left text-sm transition ${isSelected
-                                                        ? 'bg-purple-500/20 ring-1 ring-purple-500'
-                                                        : 'bg-white/5 hover:bg-white/10'
+                                                    ? 'bg-purple-500/20 ring-1 ring-purple-500'
+                                                    : 'bg-white/5 hover:bg-white/10'
                                                     }`}
                                             >
                                                 <div className="text-white">{dp.name}</div>
@@ -156,7 +224,7 @@ function CreateRide() {
                         <button
                             type="button"
                             onClick={() => setStep(2)}
-                            disabled={!fromId || !toId}
+                            disabled={!fromText || !toText}
                             className="w-full btn-gradient text-white py-4 rounded-xl font-semibold disabled:opacity-50"
                         >
                             Continue →
@@ -202,8 +270,8 @@ function CreateRide() {
                                         type="button"
                                         onClick={() => setCabTypeId(cab.id)}
                                         className={`p-4 rounded-xl text-left transition ${cabTypeId === cab.id
-                                                ? 'bg-purple-500/20 ring-1 ring-purple-500'
-                                                : 'bg-white/5 hover:bg-white/10'
+                                            ? 'bg-purple-500/20 ring-1 ring-purple-500'
+                                            : 'bg-white/5 hover:bg-white/10'
                                             }`}
                                     >
                                         <div className="text-2xl mb-1">{cab.icon}</div>
@@ -212,6 +280,23 @@ function CreateRide() {
                                     </button>
                                 ))}
                             </div>
+                        </div>
+
+                        {/* Max People Setting */}
+                        <div>
+                            <label className="block text-gray-300 text-sm mb-2">Max People Can Join</label>
+                            <div className="flex items-center gap-4">
+                                <input
+                                    type="range"
+                                    min="2"
+                                    max={selectedCab?.maxSeats || 6}
+                                    value={maxPeople}
+                                    onChange={(e) => setMaxPeople(parseInt(e.target.value))}
+                                    className="flex-1 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
+                                />
+                                <span className="text-2xl font-bold text-purple-400 w-10 text-center">{maxPeople}</span>
+                            </div>
+                            <p className="text-gray-500 text-sm mt-1">You can close the ride anytime after creating</p>
                         </div>
 
                         <div className="flex gap-3">
@@ -267,7 +352,7 @@ function CreateRide() {
                         <div className="bg-white/5 rounded-xl p-4 space-y-2">
                             <div className="flex justify-between text-sm">
                                 <span className="text-gray-400">Route</span>
-                                <span className="text-white">{selectedFrom?.name} → {selectedTo?.name}</span>
+                                <span className="text-white">{fromText} → {toText}</span>
                             </div>
                             <div className="flex justify-between text-sm">
                                 <span className="text-gray-400">When</span>
@@ -276,6 +361,10 @@ function CreateRide() {
                             <div className="flex justify-between text-sm">
                                 <span className="text-gray-400">Cab</span>
                                 <span className="text-white">{selectedCab?.icon} {selectedCab?.name}</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                                <span className="text-gray-400">Max People</span>
+                                <span className="text-purple-400 font-semibold">{maxPeople}</span>
                             </div>
                             <div className="flex justify-between text-sm">
                                 <span className="text-gray-400">Drop Points</span>

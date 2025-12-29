@@ -103,6 +103,13 @@ export function AuthProvider({ children }) {
         setProfile(null);
     };
 
+    // Update user profile
+    const updateProfile = async (profileData) => {
+        const response = await api.put('/auth/profile', profileData);
+        setProfile(response.data.user);
+        return response.data.user;
+    };
+
     // ============================================
     // CONTEXT VALUE - What we share with the app
     // ============================================
@@ -114,7 +121,8 @@ export function AuthProvider({ children }) {
         signup,         // Sign up function
         login,          // Login function
         logout,         // Logout function
-        completeProfile // Complete registration
+        completeProfile, // Complete registration
+        updateProfile,  // Update profile
     };
 
     return (
