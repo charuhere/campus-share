@@ -191,7 +191,7 @@ function CreateRide() {
                                             onClick={() => selectTo(loc)}
                                             className="w-full px-4 py-3 text-left text-black hover:bg-emerald-500/20 transition-colors"
                                         >
-                                            {loc.name} {loc.estimatedCost ? `(≈₹${loc.estimatedCost})` : ''}
+                                            {loc.name}
                                         </button>
                                     ))}
                                 </div>
