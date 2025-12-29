@@ -64,7 +64,7 @@ function Home() {
                 <div className="flex gap-3">
                     <Link
                         to="/quick-match"
-                        className="bg-gradient-to-r from-yellow-500 to-orange-500 px-6 py-3 rounded-xl text-white font-semibold text-center hover:scale-105 transition-transform shadow-lg shadow-orange-500/25"
+                        className="bg-neutral-800 hover:bg-neutral-700 px-6 py-3 rounded-xl text-white font-semibold text-center transition-all"
                     >
                         ⚡ Quick Match
                     </Link>
@@ -84,9 +84,9 @@ function Home() {
                     onChange={(e) => setDestination(e.target.value)}
                     className="input-modern text-white bg-transparent py-2 px-4 min-w-[200px]"
                 >
-                    <option value="" className="bg-slate-900">All Destinations</option>
+                    <option value="" className="bg-neutral-900">All Destinations</option>
                     {DESTINATIONS.map((dest) => (
-                        <option key={dest.id} value={dest.id} className="bg-slate-900">
+                        <option key={dest.id} value={dest.id} className="bg-neutral-900">
                             {dest.name}
                         </option>
                     ))}

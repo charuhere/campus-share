@@ -16,7 +16,7 @@ function Navbar() {
     const isActive = (path) => location.pathname === path;
 
     return (
-        <nav className="sticky top-0 z-50 glass-card border-0 border-b border-white/10 rounded-none">
+        <nav className="sticky top-0 z-50 bg-black border-b border-neutral-800">
             <div className="max-w-6xl mx-auto px-4">
                 <div className="flex justify-between items-center h-16">
                     {/* Logo */}
@@ -79,8 +79,8 @@ function NavLink({ to, active, children }) {
         <Link
             to={to}
             className={`px-3 py-2 rounded-lg transition text-sm ${active
-                    ? 'bg-white/10 text-white'
-                    : 'text-gray-400 hover:text-white hover:bg-white/5'
+                ? 'bg-white/10 text-white'
+                : 'text-gray-400 hover:text-white hover:bg-white/5'
                 }`}
         >
             {children}
