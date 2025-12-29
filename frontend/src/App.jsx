@@ -29,15 +29,16 @@ function App() {
           position="top-center"
           toastOptions={{
             style: {
-              background: '#171717',
-              color: '#ffffff',
-              border: '1px solid #262626',
+              background: '#ffffff',
+              color: '#000000',
+              border: '1px solid #e5e5e5',
+              boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
             },
           }}
         />
 
         {/* Main App Layout */}
-        <div className="flex flex-col h-screen overflow-hidden bg-black text-white">
+        <div className="flex flex-col h-screen overflow-hidden bg-gray-100 text-black">
           {/* Navbar */}
           <Navbar />
 

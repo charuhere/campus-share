@@ -39,10 +39,10 @@ function RideCard({ ride, onJoin, onLeave, currentUserId }) {
             {/* Top Row: Route & Seats */}
             <div className="flex justify-between items-start mb-4">
                 <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-white mb-1">
+                    <h3 className="text-lg font-semibold text-black mb-1">
                         {ride.from.name}
                     </h3>
-                    <div className="flex items-center gap-2 text-gray-400 text-sm">
+                    <div className="flex items-center gap-2 text-gray-600 text-sm">
                         <span>↓</span>
                         <span>{ride.to.name}</span>
                     </div>
@@ -75,7 +75,7 @@ function RideCard({ ride, onJoin, onLeave, currentUserId }) {
             )}
 
             {/* Date/Time & Cab Type */}
-            <div className="flex items-center justify-between text-sm text-gray-400 mb-4 pb-4 border-b border-white/10">
+            <div className="flex items-center justify-between text-sm text-gray-600 mb-4 pb-4 border-b border-gray-200">
                 <div className="flex items-center gap-3">
                     <span>📅 {dateStr}</span>
                     <span>🕐 {timeStr}</span>
@@ -99,11 +99,11 @@ function RideCard({ ride, onJoin, onLeave, currentUserId }) {
 
             {/* Creator */}
             <div className="flex items-center gap-2 mb-4 text-sm">
-                <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white text-sm font-bold">
+                <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-black text-sm font-bold">
                     {ride.creator.name.charAt(0)}
                 </div>
                 <div>
-                    <p className="text-white">{ride.creator.name}</p>
+                    <p className="text-black">{ride.creator.name}</p>
                     <p className="text-gray-500 text-xs">{ride.creator.hostel}</p>
                 </div>
             </div>
@@ -113,7 +113,7 @@ function RideCard({ ride, onJoin, onLeave, currentUserId }) {
                 {isParticipant && (
                     <Link
                         to={`/ride/${ride._id}/chat`}
-                        className="block w-full text-center py-3 rounded-xl bg-white/5 hover:bg-white/10 text-white transition"
+                        className="block w-full text-center py-3 rounded-xl bg-gray-50 hover:bg-gray-100 text-black transition"
                     >
                         💬 Open Chat
                     </Link>
@@ -124,7 +124,7 @@ function RideCard({ ride, onJoin, onLeave, currentUserId }) {
                         <div className="space-y-2">
                             <button
                                 onClick={() => handleJoinWithDrop(null)}
-                                className="w-full btn-gradient text-white py-2 rounded-xl text-sm"
+                                className="w-full btn-gradient text-black py-2 rounded-xl text-sm"
                             >
                                 {ride.to.name} (Final)
                             </button>
@@ -132,7 +132,7 @@ function RideCard({ ride, onJoin, onLeave, currentUserId }) {
                                 <button
                                     key={dp.id}
                                     onClick={() => handleJoinWithDrop(dp)}
-                                    className="w-full bg-white/10 hover:bg-white/20 text-white py-2 rounded-xl text-sm transition"
+                                    className="w-full bg-gray-100 hover:bg-gray-200 text-black py-2 rounded-xl text-sm transition"
                                 >
                                     📍 {dp.name}
                                 </button>
@@ -147,7 +147,7 @@ function RideCard({ ride, onJoin, onLeave, currentUserId }) {
                     ) : (
                         <button
                             onClick={() => hasDropPoints ? setShowDropOptions(true) : handleJoinWithDrop(null)}
-                            className="w-full btn-gradient text-white py-3 rounded-xl font-semibold"
+                            className="w-full btn-gradient text-black py-3 rounded-xl font-semibold"
                         >
                             Join Ride →
                         </button>
@@ -170,7 +170,7 @@ function RideCard({ ride, onJoin, onLeave, currentUserId }) {
                 )}
 
                 {isFull && !hasJoined && !isCreator && (
-                    <div className="text-center py-3 rounded-xl bg-white/5 text-gray-500">
+                    <div className="text-center py-3 rounded-xl bg-gray-50 text-gray-500">
                         Ride Full
                     </div>
                 )}

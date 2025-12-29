@@ -40,29 +40,29 @@ function Login() {
 
                 {/* Card */}
                 <div className="glass-card p-6">
-                    <h2 className="text-xl font-semibold text-white mb-4 text-center">Welcome Back</h2>
+                    <h2 className="text-xl font-semibold text-black mb-4 text-center">Welcome Back</h2>
 
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div>
-                            <label className="block text-gray-400 text-xs mb-1">VIT Email</label>
+                            <label className="block text-gray-600 text-xs mb-1">VIT Email</label>
                             <input
                                 type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="yourname@vitstudent.ac.in"
-                                className="input-modern text-white placeholder-gray-500 text-sm py-2"
+                                className="input-modern text-black placeholder-gray-500 text-sm py-2"
                                 required
                             />
                         </div>
 
                         <div>
-                            <label className="block text-gray-400 text-xs mb-1">Password</label>
+                            <label className="block text-gray-600 text-xs mb-1">Password</label>
                             <input
                                 type="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="••••••••"
-                                className="input-modern text-white placeholder-gray-500 text-sm py-2"
+                                className="input-modern text-black placeholder-gray-500 text-sm py-2"
                                 required
                             />
                         </div>
@@ -70,14 +70,14 @@ function Login() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full btn-gradient text-white py-3 rounded-xl font-semibold disabled:opacity-50"
+                            className="w-full btn-gradient text-black py-3 rounded-xl font-semibold disabled:opacity-50"
                         >
                             {loading ? 'Signing in...' : 'Sign In'}
                         </button>
                     </form>
 
                     {/* Sign Up Link */}
-                    <p className="text-center text-gray-400 text-sm mt-4">
+                    <p className="text-center text-gray-600 text-sm mt-4">
                         New here?{' '}
                         <Link to="/signup" className="text-emerald-400 hover:text-emerald-300 font-medium">
                             Create Account

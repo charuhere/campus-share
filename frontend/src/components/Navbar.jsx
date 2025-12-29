@@ -22,7 +22,7 @@ function Navbar() {
                     {/* Logo */}
                     <Link to="/" className="flex items-center gap-3 group">
                         <span className="text-2xl group-hover:animate-bounce">🚗</span>
-                        <span className="text-xl font-bold gradient-text hidden sm:block">
+                        <span className="text-xl font-bold text-white hidden sm:block">
                             RideShare
                         </span>
                     </Link>
@@ -62,7 +62,7 @@ function Navbar() {
                             </Link>
                             <Link
                                 to="/signup"
-                                className="btn-gradient px-4 py-2 rounded-lg text-white text-sm"
+                                className="bg-white text-black px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-100 transition"
                             >
                                 Get Started
                             </Link>

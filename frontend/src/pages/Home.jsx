@@ -59,18 +59,18 @@ function Home() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                 <div>
                     <h1 className="text-3xl font-bold gradient-text">Available Rides</h1>
-                    <p className="text-gray-400 text-sm">Find rides posted by fellow students</p>
+                    <p className="text-gray-600 text-sm">Find rides posted by fellow students</p>
                 </div>
                 <div className="flex gap-3">
                     <Link
                         to="/quick-match"
-                        className="bg-neutral-800 hover:bg-neutral-700 px-6 py-3 rounded-xl text-white font-semibold text-center transition-all"
+                        className="bg-white border border-gray-200 hover:bg-gray-50 px-6 py-3 rounded-xl text-black font-semibold text-center transition-all"
                     >
                         ⚡ Quick Match
                     </Link>
                     <Link
                         to="/create-ride"
-                        className="btn-gradient px-6 py-3 rounded-xl text-white font-semibold text-center"
+                        className="btn-gradient px-6 py-3 rounded-xl text-black font-semibold text-center"
                     >
                         ➕ Create Ride
                     </Link>
@@ -82,7 +82,7 @@ function Home() {
                 <select
                     value={destination}
                     onChange={(e) => setDestination(e.target.value)}
-                    className="input-modern text-white bg-transparent py-2 px-4 min-w-[200px]"
+                    className="input-modern text-black bg-transparent py-2 px-4 min-w-[200px]"
                 >
                     <option value="" className="bg-neutral-900">All Destinations</option>
                     {DESTINATIONS.map((dest) => (
@@ -119,11 +119,11 @@ function Home() {
             {!loading && rides.length === 0 && (
                 <div className="text-center py-16 glass-card">
                     <div className="text-5xl mb-4">🚗</div>
-                    <h3 className="text-xl font-semibold text-white mb-2">No rides available</h3>
-                    <p className="text-gray-400 mb-6">Be the first to create a ride!</p>
+                    <h3 className="text-xl font-semibold text-black mb-2">No rides available</h3>
+                    <p className="text-gray-600 mb-6">Be the first to create a ride!</p>
                     <Link
                         to="/create-ride"
-                        className="btn-gradient px-6 py-3 rounded-xl text-white font-semibold inline-block"
+                        className="btn-gradient px-6 py-3 rounded-xl text-black font-semibold inline-block"
                     >
                         Create a Ride
                     </Link>

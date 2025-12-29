@@ -71,12 +71,12 @@ function Profile() {
             {/* Profile Header */}
             <div className="glass-card p-8 text-center mb-8">
                 {/* Avatar */}
-                <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-emerald-500 to-pink-500 flex items-center justify-center text-4xl font-bold text-white">
+                <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-emerald-500 to-pink-500 flex items-center justify-center text-4xl font-bold text-black">
                     {profile.name.charAt(0).toUpperCase()}
                 </div>
 
-                <h1 className="text-3xl font-bold text-white mb-1">{profile.name}</h1>
-                <p className="text-gray-400 mb-4">{profile.email}</p>
+                <h1 className="text-3xl font-bold text-black mb-1">{profile.name}</h1>
+                <p className="text-gray-600 mb-4">{profile.email}</p>
 
                 {/* Badges */}
                 <div className="flex justify-center gap-2 flex-wrap mb-4">
@@ -138,12 +138,12 @@ function Profile() {
             {isEditing && (
                 <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
                     <div className="glass-card p-6 w-full max-w-md">
-                        <h2 className="text-xl font-bold text-white mb-6">Edit Profile</h2>
+                        <h2 className="text-xl font-bold text-black mb-6">Edit Profile</h2>
 
                         <div className="space-y-4">
                             {/* Name */}
                             <div>
-                                <label className="block text-gray-300 text-sm mb-2">
+                                <label className="block text-gray-700 text-sm mb-2">
                                     Full Name *
                                 </label>
                                 <input
@@ -151,13 +151,13 @@ function Profile() {
                                     value={editName}
                                     onChange={(e) => setEditName(e.target.value)}
                                     placeholder="Your full name"
-                                    className="input-modern text-white placeholder-gray-500 w-full"
+                                    className="input-modern text-black placeholder-gray-500 w-full"
                                 />
                             </div>
 
                             {/* Hostel Combobox */}
                             <div className="relative">
-                                <label className="block text-gray-300 text-sm mb-2">
+                                <label className="block text-gray-700 text-sm mb-2">
                                     Hostel
                                 </label>
                                 <input
@@ -169,7 +169,7 @@ function Profile() {
                                     }}
                                     onFocus={() => setShowHostelDropdown(true)}
                                     placeholder="Type or select your hostel"
-                                    className="input-modern text-white placeholder-gray-500 w-full"
+                                    className="input-modern text-black placeholder-gray-500 w-full"
                                 />
 
                                 {/* Dropdown */}
@@ -183,7 +183,7 @@ function Profile() {
                                                     setEditHostel(h.name);
                                                     setShowHostelDropdown(false);
                                                 }}
-                                                className="w-full px-4 py-2 text-left text-white text-sm hover:bg-emerald-500/20 transition-colors"
+                                                className="w-full px-4 py-2 text-left text-black text-sm hover:bg-emerald-500/20 transition-colors"
                                             >
                                                 {h.name}
                                             </button>
@@ -194,7 +194,7 @@ function Profile() {
 
                             {/* Department */}
                             <div>
-                                <label className="block text-gray-300 text-sm mb-2">
+                                <label className="block text-gray-700 text-sm mb-2">
                                     Department
                                 </label>
                                 <input
@@ -202,7 +202,7 @@ function Profile() {
                                     value={editDepartment}
                                     onChange={(e) => setEditDepartment(e.target.value)}
                                     placeholder="e.g., CSE, ECE, MECH"
-                                    className="input-modern text-white placeholder-gray-500 w-full"
+                                    className="input-modern text-black placeholder-gray-500 w-full"
                                 />
                             </div>
                         </div>
@@ -211,14 +211,14 @@ function Profile() {
                         <div className="flex gap-3 mt-6">
                             <button
                                 onClick={closeEditModal}
-                                className="flex-1 py-3 rounded-xl font-semibold bg-slate-700 text-white hover:bg-slate-600 transition-all"
+                                className="flex-1 py-3 rounded-xl font-semibold bg-slate-700 text-black hover:bg-slate-600 transition-all"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={handleSave}
                                 disabled={saving}
-                                className="flex-1 py-3 rounded-xl font-semibold btn-gradient text-white disabled:opacity-50"
+                                className="flex-1 py-3 rounded-xl font-semibold btn-gradient text-black disabled:opacity-50"
                             >
                                 {saving ? 'Saving...' : 'Save Changes'}
                             </button>
@@ -237,7 +237,7 @@ function StatCard({ icon, value, label, gradient }) {
             <div className={`text-3xl font-bold bg-gradient-to-r ${gradient} bg-clip-text text-transparent`}>
                 {value}
             </div>
-            <div className="text-gray-400 text-sm">{label}</div>
+            <div className="text-gray-600 text-sm">{label}</div>
         </div>
     );
 }
@@ -247,8 +247,8 @@ function InfoCard({ label, value, icon }) {
         <div className="glass-card p-4 flex items-center gap-4">
             <div className="text-2xl">{icon}</div>
             <div className="flex-1">
-                <p className="text-gray-400 text-sm">{label}</p>
-                <p className="text-white font-medium">{value}</p>
+                <p className="text-gray-600 text-sm">{label}</p>
+                <p className="text-black font-medium">{value}</p>
             </div>
         </div>
     );

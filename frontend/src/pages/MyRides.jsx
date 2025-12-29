@@ -51,7 +51,7 @@ function MyRides() {
             {/* Header */}
             <div className="text-center mb-8">
                 <h1 className="text-4xl font-bold gradient-text mb-2">My Rides</h1>
-                <p className="text-gray-400">Track your journey history</p>
+                <p className="text-gray-600">Track your journey history</p>
             </div>
 
             {/* Tabs */}
@@ -101,10 +101,10 @@ function MyRides() {
                     <div className="text-6xl mb-4">
                         {activeTab === 'created' ? '🚗' : '🤝'}
                     </div>
-                    <h3 className="text-2xl font-semibold text-white mb-2">
+                    <h3 className="text-2xl font-semibold text-black mb-2">
                         No {activeTab} rides yet
                     </h3>
-                    <p className="text-gray-400 mb-8">
+                    <p className="text-gray-600 mb-8">
                         {activeTab === 'created'
                             ? 'Create your first ride and find co-travelers!'
                             : 'Browse available rides and join one!'
@@ -112,7 +112,7 @@ function MyRides() {
                     </p>
                     <Link
                         to={activeTab === 'created' ? '/create-ride' : '/'}
-                        className="btn-gradient px-8 py-4 rounded-xl text-white font-semibold inline-block"
+                        className="btn-gradient px-8 py-4 rounded-xl text-black font-semibold inline-block"
                     >
                         {activeTab === 'created' ? 'Create Ride' : 'Find Rides'}
                     </Link>
@@ -127,12 +127,12 @@ function TabButton({ active, onClick, count, children }) {
         <button
             onClick={onClick}
             className={`px-6 py-3 rounded-xl font-medium transition flex items-center gap-2 ${active
-                ? 'bg-gradient-to-r from-emerald-500 to-pink-500 text-white'
-                : 'text-gray-400 hover:text-white'
+                ? 'bg-gradient-to-r from-emerald-500 to-pink-500 text-black'
+                : 'text-gray-600 hover:text-black'
                 }`}
         >
             {children}
-            <span className={`px-2 py-0.5 rounded-full text-xs ${active ? 'bg-white/20' : 'bg-white/10'
+            <span className={`px-2 py-0.5 rounded-full text-xs ${active ? 'bg-white/20' : 'bg-gray-100'
                 }`}>
                 {count}
             </span>
@@ -150,17 +150,17 @@ function RideItem({ ride, isOwner, onCancel }) {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 {/* Route & Time */}
                 <div className="flex-1">
-                    <div className="flex items-center gap-2 text-sm text-gray-400 mb-1">
+                    <div className="flex items-center gap-2 text-sm text-gray-600 mb-1">
                         {ride.cabType.icon}
                         <span>{rideDate.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' })}</span>
                         <span>•</span>
                         <span>{rideDate.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}</span>
                     </div>
-                    <h3 className="text-lg font-semibold text-white">
+                    <h3 className="text-lg font-semibold text-black">
                         {ride.from.name} → {ride.to.name}
                     </h3>
                     <div className="flex items-center gap-3 mt-2 text-sm">
-                        <span className="text-gray-400">
+                        <span className="text-gray-600">
                             {ride.participants.length}/{ride.totalSeats} riders
                         </span>
                         <span className="gradient-text font-semibold">
@@ -177,7 +177,7 @@ function RideItem({ ride, isOwner, onCancel }) {
                         </span>
                     )}
                     {isPast && !isCancelled && (
-                        <span className="px-3 py-1 rounded-full bg-gray-500/20 text-gray-400 text-sm">
+                        <span className="px-3 py-1 rounded-full bg-gray-500/20 text-gray-600 text-sm">
                             Completed
                         </span>
                     )}
@@ -185,7 +185,7 @@ function RideItem({ ride, isOwner, onCancel }) {
                         <>
                             <Link
                                 to={`/ride/${ride._id}/chat`}
-                                className="px-4 py-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition text-sm"
+                                className="px-4 py-2 rounded-lg bg-gray-100 text-black hover:bg-white/20 transition text-sm"
                             >
                                 💬 Chat
                             </Link>

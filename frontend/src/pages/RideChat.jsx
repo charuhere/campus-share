@@ -119,7 +119,7 @@ function RideChat() {
             <div className="glass-card rounded-none border-0 border-b border-white/10 p-4">
                 <div className="max-w-4xl mx-auto flex items-center justify-between">
                     <div>
-                        <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+                        <h2 className="text-lg font-semibold text-black flex items-center gap-2">
                             {ride?.from.name} → {ride?.to.name}
                             {isClosed && (
                                 <span className="px-2 py-0.5 text-xs rounded-full bg-orange-500/20 text-orange-400">
@@ -127,7 +127,7 @@ function RideChat() {
                                 </span>
                             )}
                         </h2>
-                        <p className="text-gray-400 text-sm flex items-center gap-2">
+                        <p className="text-gray-600 text-sm flex items-center gap-2">
                             <span>{ride?.participants.length}/{ride?.totalSeats} riders</span>
                             <span className={`w-2 h-2 rounded-full ${connected ? 'bg-green-500' : 'bg-red-500'}`}></span>
                             <span className="text-xs">{connected ? 'Connected' : 'Disconnected'}</span>
@@ -147,7 +147,7 @@ function RideChat() {
                         )}
                         <button
                             onClick={() => navigate(-1)}
-                            className="text-gray-400 hover:text-white transition px-4 py-2 rounded-lg bg-white/5"
+                            className="text-gray-600 hover:text-black transition px-4 py-2 rounded-lg bg-gray-50"
                         >
                             ← Back
                         </button>
@@ -161,7 +161,7 @@ function RideChat() {
                     {messages.length === 0 && (
                         <div className="text-center py-20">
                             <div className="text-6xl mb-4">💬</div>
-                            <p className="text-gray-400">No messages yet. Say hi!</p>
+                            <p className="text-gray-600">No messages yet. Say hi!</p>
                         </div>
                     )}
 
@@ -175,11 +175,11 @@ function RideChat() {
                                         <p className="text-xs text-gray-500 mb-1 ml-3">{msg.senderName}</p>
                                     )}
                                     <div className={`px-4 py-3 rounded-2xl ${isMe
-                                        ? 'bg-gradient-to-r from-emerald-500 to-pink-500 text-white rounded-br-none'
-                                        : 'glass-card text-white rounded-bl-none'
+                                        ? 'bg-gradient-to-r from-emerald-500 to-pink-500 text-black rounded-br-none'
+                                        : 'glass-card text-black rounded-bl-none'
                                         }`}>
                                         <p>{msg.content}</p>
-                                        <p className={`text-xs mt-1 ${isMe ? 'text-white/70' : 'text-gray-500'}`}>
+                                        <p className={`text-xs mt-1 ${isMe ? 'text-black/70' : 'text-gray-500'}`}>
                                             {formatTime(msg.createdAt)}
                                         </p>
                                     </div>
@@ -199,12 +199,12 @@ function RideChat() {
                         value={newMessage}
                         onChange={(e) => setNewMessage(e.target.value)}
                         placeholder="Type a message..."
-                        className="flex-1 input-modern text-white rounded-full px-6"
+                        className="flex-1 input-modern text-black rounded-full px-6"
                     />
                     <button
                         type="submit"
                         disabled={!newMessage.trim()}
-                        className="btn-gradient px-6 py-3 rounded-full text-white font-semibold disabled:opacity-50"
+                        className="btn-gradient px-6 py-3 rounded-full text-black font-semibold disabled:opacity-50"
                     >
                         Send
                     </button>

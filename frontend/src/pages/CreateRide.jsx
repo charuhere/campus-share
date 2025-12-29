@@ -113,7 +113,7 @@ function CreateRide() {
             {/* Header */}
             <div className="text-center mb-10">
                 <h1 className="text-4xl font-bold gradient-text mb-2">Create a Ride</h1>
-                <p className="text-gray-400">Share your journey with others</p>
+                <p className="text-gray-600">Share your journey with others</p>
             </div>
 
             {/* Progress Steps */}
@@ -121,7 +121,7 @@ function CreateRide() {
                 {[1, 2, 3].map((s) => (
                     <div
                         key={s}
-                        className={`w-12 h-1 rounded-full transition-all ${step >= s ? 'bg-gradient-to-r from-emerald-500 to-pink-500' : 'bg-white/10'
+                        className={`w-12 h-1 rounded-full transition-all ${step >= s ? 'bg-gradient-to-r from-emerald-500 to-pink-500' : 'bg-gray-100'
                             }`}
                     />
                 ))}
@@ -131,11 +131,11 @@ function CreateRide() {
                 {/* Step 1: Route */}
                 {step === 1 && (
                     <div className="space-y-6">
-                        <h2 className="text-xl font-semibold text-white mb-4">📍 Where are you going?</h2>
+                        <h2 className="text-xl font-semibold text-black mb-4">📍 Where are you going?</h2>
 
                         {/* From - Combobox */}
                         <div className="relative">
-                            <label className="block text-gray-300 text-sm mb-2">Pickup Location</label>
+                            <label className="block text-gray-700 text-sm mb-2">Pickup Location</label>
                             <input
                                 type="text"
                                 value={fromText}
@@ -146,17 +146,17 @@ function CreateRide() {
                                 }}
                                 onFocus={() => setShowFromDropdown(true)}
                                 placeholder="Type or select pickup location"
-                                className="input-modern text-white w-full"
+                                className="input-modern text-black w-full"
                                 required
                             />
                             {showFromDropdown && filteredFromLocations.length > 0 && (
-                                <div className="absolute z-10 w-full mt-1 max-h-48 overflow-y-auto rounded-xl bg-neutral-800 border border-neutral-700 shadow-lg">
+                                <div className="absolute z-10 w-full mt-1 max-h-48 overflow-y-auto rounded-xl bg-white border border-gray-300 shadow-lg">
                                     {filteredFromLocations.slice(0, 8).map((loc) => (
                                         <button
                                             key={loc.id}
                                             type="button"
                                             onClick={() => selectFrom(loc)}
-                                            className="w-full px-4 py-3 text-left text-white hover:bg-emerald-500/20 transition-colors"
+                                            className="w-full px-4 py-3 text-left text-black hover:bg-emerald-500/20 transition-colors"
                                         >
                                             {loc.name}
                                         </button>
@@ -167,7 +167,7 @@ function CreateRide() {
 
                         {/* To - Combobox */}
                         <div className="relative">
-                            <label className="block text-gray-300 text-sm mb-2">Final Destination</label>
+                            <label className="block text-gray-700 text-sm mb-2">Final Destination</label>
                             <input
                                 type="text"
                                 value={toText}
@@ -178,17 +178,17 @@ function CreateRide() {
                                 }}
                                 onFocus={() => setShowToDropdown(true)}
                                 placeholder="Type or select destination"
-                                className="input-modern text-white w-full"
+                                className="input-modern text-black w-full"
                                 required
                             />
                             {showToDropdown && filteredToLocations.length > 0 && (
-                                <div className="absolute z-10 w-full mt-1 max-h-48 overflow-y-auto rounded-xl bg-neutral-800 border border-neutral-700 shadow-lg">
+                                <div className="absolute z-10 w-full mt-1 max-h-48 overflow-y-auto rounded-xl bg-white border border-gray-300 shadow-lg">
                                     {filteredToLocations.slice(0, 8).map((loc) => (
                                         <button
                                             key={loc.id}
                                             type="button"
                                             onClick={() => selectTo(loc)}
-                                            className="w-full px-4 py-3 text-left text-white hover:bg-emerald-500/20 transition-colors"
+                                            className="w-full px-4 py-3 text-left text-black hover:bg-emerald-500/20 transition-colors"
                                         >
                                             {loc.name} {loc.estimatedCost ? `(≈₹${loc.estimatedCost})` : ''}
                                         </button>
@@ -199,7 +199,7 @@ function CreateRide() {
 
                         {availableDropPoints.length > 0 && (
                             <div>
-                                <label className="block text-gray-300 text-sm mb-2">Allow On-the-Way Drops</label>
+                                <label className="block text-gray-700 text-sm mb-2">Allow On-the-Way Drops</label>
                                 <div className="grid grid-cols-2 gap-2">
                                     {availableDropPoints.map((dp) => {
                                         const isSelected = selectedDropPoints.find(s => s.id === dp.id);
@@ -210,10 +210,10 @@ function CreateRide() {
                                                 onClick={() => toggleDropPoint(dp)}
                                                 className={`p-3 rounded-xl text-left text-sm transition ${isSelected
                                                     ? 'bg-emerald-500/20 ring-1 ring-emerald-500'
-                                                    : 'bg-white/5 hover:bg-white/10'
+                                                    : 'bg-gray-50 hover:bg-gray-100'
                                                     }`}
                                             >
-                                                <div className="text-white">{dp.name}</div>
+                                                <div className="text-black">{dp.name}</div>
                                                 <div className="text-gray-500">₹{dp.estimatedCost}</div>
                                             </button>
                                         );
@@ -226,7 +226,7 @@ function CreateRide() {
                             type="button"
                             onClick={() => setStep(2)}
                             disabled={!fromText || !toText}
-                            className="w-full btn-gradient text-white py-4 rounded-xl font-semibold disabled:opacity-50"
+                            className="w-full btn-gradient text-black py-4 rounded-xl font-semibold disabled:opacity-50"
                         >
                             Continue →
                         </button>
@@ -236,10 +236,10 @@ function CreateRide() {
                 {/* Step 2: When & How */}
                 {step === 2 && (
                     <div className="space-y-6">
-                        <h2 className="text-xl font-semibold text-white mb-4">🕐 When & How?</h2>
+                        <h2 className="text-xl font-semibold text-black mb-4">🕐 When & How?</h2>
 
                         <div>
-                            <label className="block text-gray-300 text-sm mb-2">Date & Time</label>
+                            <label className="block text-gray-700 text-sm mb-2">Date & Time</label>
                             <DatePicker
                                 selected={selectedDateTime}
                                 onChange={(date) => setSelectedDateTime(date)}
@@ -249,7 +249,7 @@ function CreateRide() {
                                 dateFormat="MMMM d, yyyy h:mm aa"
                                 minDate={minDateTime}
                                 placeholderText="Select date and time"
-                                className="input-modern text-white w-full cursor-pointer"
+                                className="input-modern text-black w-full cursor-pointer"
                                 calendarClassName="dark-calendar"
                                 required
                             />
@@ -257,7 +257,7 @@ function CreateRide() {
 
                         {/* Max People Setting */}
                         <div>
-                            <label className="block text-gray-300 text-sm mb-2">Max People Can Join</label>
+                            <label className="block text-gray-700 text-sm mb-2">Max People Can Join</label>
                             <div className="flex items-center gap-4">
                                 <input
                                     type="range"
@@ -276,7 +276,7 @@ function CreateRide() {
                             <button
                                 type="button"
                                 onClick={() => setStep(1)}
-                                className="flex-1 py-4 rounded-xl bg-white/5 text-gray-400 hover:bg-white/10"
+                                className="flex-1 py-4 rounded-xl bg-gray-50 text-gray-600 hover:bg-gray-100"
                             >
                                 ← Back
                             </button>
@@ -284,7 +284,7 @@ function CreateRide() {
                                 type="button"
                                 onClick={() => setStep(3)}
                                 disabled={!selectedDateTime}
-                                className="flex-1 btn-gradient text-white py-4 rounded-xl font-semibold disabled:opacity-50"
+                                className="flex-1 btn-gradient text-black py-4 rounded-xl font-semibold disabled:opacity-50"
                             >
                                 Continue →
                             </button>
@@ -295,15 +295,15 @@ function CreateRide() {
                 {/* Step 3: Cost & Notes */}
                 {step === 3 && (
                     <div className="space-y-6">
-                        <h2 className="text-xl font-semibold text-white mb-4">💰 Final Details</h2>
+                        <h2 className="text-xl font-semibold text-black mb-4">💰 Final Details</h2>
 
                         <div>
-                            <label className="block text-gray-300 text-sm mb-2">Estimated Cost (₹)</label>
+                            <label className="block text-gray-700 text-sm mb-2">Estimated Cost (₹)</label>
                             <input
                                 type="number"
                                 value={estimatedCost}
                                 onChange={(e) => setEstimatedCost(e.target.value)}
-                                className="input-modern text-white w-full text-2xl font-bold"
+                                className="input-modern text-black w-full text-2xl font-bold"
                                 required
                                 min="0"
                             />
@@ -311,33 +311,33 @@ function CreateRide() {
                         </div>
 
                         <div>
-                            <label className="block text-gray-300 text-sm mb-2">Notes (Optional)</label>
+                            <label className="block text-gray-700 text-sm mb-2">Notes (Optional)</label>
                             <textarea
                                 value={notes}
                                 onChange={(e) => setNotes(e.target.value)}
                                 placeholder="Meeting point, luggage info, etc."
                                 rows={3}
-                                className="input-modern text-white w-full resize-none"
+                                className="input-modern text-black w-full resize-none"
                             />
                         </div>
 
                         {/* Summary */}
-                        <div className="bg-white/5 rounded-xl p-4 space-y-2">
+                        <div className="bg-gray-50 rounded-xl p-4 space-y-2">
                             <div className="flex justify-between text-sm">
-                                <span className="text-gray-400">Route</span>
-                                <span className="text-white">{fromText} → {toText}</span>
+                                <span className="text-gray-600">Route</span>
+                                <span className="text-black">{fromText} → {toText}</span>
                             </div>
                             <div className="flex justify-between text-sm">
-                                <span className="text-gray-400">When</span>
-                                <span className="text-white">{selectedDateTime?.toLocaleString()}</span>
+                                <span className="text-gray-600">When</span>
+                                <span className="text-black">{selectedDateTime?.toLocaleString()}</span>
                             </div>
                             <div className="flex justify-between text-sm">
-                                <span className="text-gray-400">Max People</span>
+                                <span className="text-gray-600">Max People</span>
                                 <span className="text-emerald-400 font-semibold">{maxPeople}</span>
                             </div>
                             <div className="flex justify-between text-sm">
-                                <span className="text-gray-400">Drop Points</span>
-                                <span className="text-white">{selectedDropPoints.length} stops</span>
+                                <span className="text-gray-600">Drop Points</span>
+                                <span className="text-black">{selectedDropPoints.length} stops</span>
                             </div>
                         </div>
 
@@ -345,14 +345,14 @@ function CreateRide() {
                             <button
                                 type="button"
                                 onClick={() => setStep(2)}
-                                className="flex-1 py-4 rounded-xl bg-white/5 text-gray-400 hover:bg-white/10"
+                                className="flex-1 py-4 rounded-xl bg-gray-50 text-gray-600 hover:bg-gray-100"
                             >
                                 ← Back
                             </button>
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="flex-1 btn-gradient text-white py-4 rounded-xl font-semibold disabled:opacity-50"
+                                className="flex-1 btn-gradient text-black py-4 rounded-xl font-semibold disabled:opacity-50"
                             >
                                 {loading ? 'Creating...' : 'Create Ride ✨'}
                             </button>

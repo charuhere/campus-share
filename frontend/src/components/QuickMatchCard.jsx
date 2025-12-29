@@ -28,8 +28,8 @@ function QuickMatchCard({ session, onJoin, joining }) {
                 <div className="flex items-center gap-2">
                     <span className="text-2xl">⚡</span>
                     <div>
-                        <p className="text-sm text-gray-400">Going to</p>
-                        <h3 className="font-semibold text-white">{session.destination.name}</h3>
+                        <p className="text-sm text-gray-600">Going to</p>
+                        <h3 className="font-semibold text-black">{session.destination.name}</h3>
                     </div>
                 </div>
 
@@ -43,13 +43,13 @@ function QuickMatchCard({ session, onJoin, joining }) {
             {/* Info row */}
             <div className="flex items-center gap-4 text-sm mb-4">
                 {/* Distance */}
-                <div className="flex items-center gap-1 text-gray-300">
+                <div className="flex items-center gap-1 text-gray-700">
                     <span>📍</span>
                     <span className="text-green-400 font-medium">{formatDistance(session.distance)}</span>
                 </div>
 
                 {/* People */}
-                <div className="flex items-center gap-1 text-gray-300">
+                <div className="flex items-center gap-1 text-gray-700">
                     <span>👥</span>
                     <span className={isAlmostFull ? 'text-orange-400 font-medium' : ''}>
                         {session.participantCount}/{session.maxParticipants}
@@ -67,7 +67,7 @@ function QuickMatchCard({ session, onJoin, joining }) {
 
             {/* Meetup point if available */}
             {session.meetupPoint?.name && (
-                <div className="text-sm text-gray-400 mb-3">
+                <div className="text-sm text-gray-600 mb-3">
                     <span className="text-yellow-400">📌</span> Meet at: {session.meetupPoint.name}
                 </div>
             )}
@@ -77,8 +77,8 @@ function QuickMatchCard({ session, onJoin, joining }) {
                 onClick={() => onJoin(session._id)}
                 disabled={joining || session.availableSpots <= 0}
                 className={`w-full py-2 rounded-xl font-semibold transition-all duration-300 ${session.availableSpots <= 0
-                    ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
-                    : 'btn-gradient text-white hover:scale-[1.02]'
+                    ? 'bg-gray-200 text-gray-600 cursor-not-allowed'
+                    : 'btn-gradient text-black hover:scale-[1.02]'
                     }`}
             >
                 {joining ? (

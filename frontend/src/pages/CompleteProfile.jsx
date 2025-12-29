@@ -60,7 +60,7 @@ function CompleteProfile() {
                     <h1 className="text-3xl font-bold gradient-text mb-2">
                         Almost There!
                     </h1>
-                    <p className="text-gray-400">
+                    <p className="text-gray-600">
                         Complete your profile to start sharing rides
                     </p>
                 </div>
@@ -69,7 +69,7 @@ function CompleteProfile() {
                 <div className="glass-card p-8">
                     <form onSubmit={handleSubmit} className="space-y-5">
                         <div>
-                            <label className="block text-gray-300 text-sm mb-2">
+                            <label className="block text-gray-700 text-sm mb-2">
                                 Full Name *
                             </label>
                             <input
@@ -77,14 +77,14 @@ function CompleteProfile() {
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 placeholder="Your full name"
-                                className="input-modern text-white placeholder-gray-500 w-full"
+                                className="input-modern text-black placeholder-gray-500 w-full"
                                 required
                             />
                         </div>
 
                         {/* Hostel Combobox - Optional */}
                         <div className="relative">
-                            <label className="block text-gray-300 text-sm mb-2">
+                            <label className="block text-gray-700 text-sm mb-2">
                                 Hostel (Optional)
                             </label>
                             <input
@@ -96,18 +96,18 @@ function CompleteProfile() {
                                 }}
                                 onFocus={() => setShowHostelDropdown(true)}
                                 placeholder="Type or select your hostel"
-                                className="input-modern text-white placeholder-gray-500 w-full"
+                                className="input-modern text-black placeholder-gray-500 w-full"
                             />
 
                             {/* Dropdown */}
                             {showHostelDropdown && filteredHostels.length > 0 && (
-                                <div className="absolute z-10 w-full mt-1 max-h-48 overflow-y-auto rounded-xl bg-slate-800 border border-slate-700 shadow-lg">
+                                <div className="absolute z-10 w-full mt-1 max-h-48 overflow-y-auto rounded-xl bg-white border border-gray-300 shadow-lg">
                                     {filteredHostels.map((h) => (
                                         <button
                                             key={h.id}
                                             type="button"
                                             onClick={() => selectHostel(h.name)}
-                                            className="w-full px-4 py-3 text-left text-white hover:bg-emerald-500/20 transition-colors first:rounded-t-xl last:rounded-b-xl"
+                                            className="w-full px-4 py-3 text-left text-black hover:bg-emerald-500/20 transition-colors first:rounded-t-xl last:rounded-b-xl"
                                         >
                                             {h.name}
                                         </button>
@@ -117,7 +117,7 @@ function CompleteProfile() {
                         </div>
 
                         <div>
-                            <label className="block text-gray-300 text-sm mb-2">
+                            <label className="block text-gray-700 text-sm mb-2">
                                 Department (Optional)
                             </label>
                             <input
@@ -125,14 +125,14 @@ function CompleteProfile() {
                                 value={department}
                                 onChange={(e) => setDepartment(e.target.value)}
                                 placeholder="e.g., CSE, ECE, MECH"
-                                className="input-modern text-white placeholder-gray-500 w-full"
+                                className="input-modern text-black placeholder-gray-500 w-full"
                             />
                         </div>
 
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full btn-gradient text-white py-4 rounded-xl font-semibold text-lg disabled:opacity-50"
+                            className="w-full btn-gradient text-black py-4 rounded-xl font-semibold text-lg disabled:opacity-50"
                         >
                             {loading ? 'Saving...' : 'Complete Profile ✨'}
                         </button>

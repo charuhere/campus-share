@@ -58,37 +58,37 @@ function Signup() {
                 <div className="glass-card p-6">
                     <form onSubmit={handleSubmit} className="space-y-3">
                         <div>
-                            <label className="block text-gray-400 text-xs mb-1">VIT Email</label>
+                            <label className="block text-gray-600 text-xs mb-1">VIT Email</label>
                             <input
                                 type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="yourname@vitstudent.ac.in"
-                                className="input-modern text-white placeholder-gray-500 text-sm py-2"
+                                className="input-modern text-black placeholder-gray-500 text-sm py-2"
                                 required
                             />
                         </div>
 
                         <div>
-                            <label className="block text-gray-400 text-xs mb-1">Password</label>
+                            <label className="block text-gray-600 text-xs mb-1">Password</label>
                             <input
                                 type="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="Min 6 characters"
-                                className="input-modern text-white placeholder-gray-500 text-sm py-2"
+                                className="input-modern text-black placeholder-gray-500 text-sm py-2"
                                 required
                             />
                         </div>
 
                         <div>
-                            <label className="block text-gray-400 text-xs mb-1">Confirm Password</label>
+                            <label className="block text-gray-600 text-xs mb-1">Confirm Password</label>
                             <input
                                 type="password"
                                 value={confirmPassword}
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 placeholder="Re-enter password"
-                                className="input-modern text-white placeholder-gray-500 text-sm py-2"
+                                className="input-modern text-black placeholder-gray-500 text-sm py-2"
                                 required
                             />
                         </div>
@@ -96,14 +96,14 @@ function Signup() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full btn-gradient text-white py-3 rounded-xl font-semibold disabled:opacity-50"
+                            className="w-full btn-gradient text-black py-3 rounded-xl font-semibold disabled:opacity-50"
                         >
                             {loading ? 'Creating...' : 'Create Account'}
                         </button>
                     </form>
 
                     {/* Login Link */}
-                    <p className="text-center text-gray-400 text-sm mt-4">
+                    <p className="text-center text-gray-600 text-sm mt-4">
                         Have an account?{' '}
                         <Link to="/login" className="text-emerald-400 hover:text-emerald-300 font-medium">
                             Sign In
