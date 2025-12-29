@@ -1,9 +1,10 @@
-// Profile Page - Premium Design with Edit Feature
+// Profile Page - Uber Style with Lucide Icons
 
 import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { CAMPUS_LOCATIONS } from '../constants/locations';
 import toast from 'react-hot-toast';
+import { Car, Users, CheckCircle, Building, GraduationCap, Calendar, Pencil, Loader2, X, Check } from 'lucide-react';
 
 function Profile() {
     const { profile, updateProfile } = useAuth();
@@ -61,7 +62,7 @@ function Profile() {
     if (!profile) {
         return (
             <div className="min-h-screen flex items-center justify-center">
-                <div className="w-12 h-12 border-4 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin"></div>
+                <Loader2 className="w-12 h-12 text-black animate-spin" />
             </div>
         );
     }
@@ -71,7 +72,7 @@ function Profile() {
             {/* Profile Header */}
             <div className="glass-card p-8 text-center mb-8">
                 {/* Avatar */}
-                <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-emerald-500 to-pink-500 flex items-center justify-center text-4xl font-bold text-black">
+                <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-black flex items-center justify-center text-4xl font-bold text-white">
                     {profile.name.charAt(0).toUpperCase()}
                 </div>
 
@@ -80,49 +81,49 @@ function Profile() {
 
                 {/* Badges */}
                 <div className="flex justify-center gap-2 flex-wrap mb-4">
-                    <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-sm">
-                        🎓 VIT Student
+                    <span className="px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-sm flex items-center gap-1">
+                        <GraduationCap className="w-4 h-4" />
+                        VIT Student
                     </span>
-                    <span className="px-3 py-1 rounded-full bg-green-500/20 text-green-300 text-sm">
-                        ✓ Verified
+                    <span className="px-3 py-1 rounded-full bg-green-50 text-green-600 text-sm flex items-center gap-1">
+                        <CheckCircle className="w-4 h-4" />
+                        Verified
                     </span>
                 </div>
 
                 {/* Edit Button */}
                 <button
                     onClick={openEditModal}
-                    className="px-6 py-2 rounded-xl font-semibold bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-all"
+                    className="px-6 py-2 rounded-xl font-semibold bg-gray-100 text-black hover:bg-gray-200 transition-all flex items-center gap-2 mx-auto"
                 >
-                    ✏️ Edit Profile
+                    <Pencil className="w-4 h-4" />
+                    Edit Profile
                 </button>
             </div>
 
             {/* Stats Grid */}
             <div className="grid grid-cols-3 gap-4 mb-8">
                 <StatCard
-                    icon="🚗"
+                    icon={<Car className="w-6 h-6" />}
                     value={profile.ridesCreated}
                     label="Created"
-                    gradient="from-blue-500 to-cyan-500"
                 />
                 <StatCard
-                    icon="🤝"
+                    icon={<Users className="w-6 h-6" />}
                     value={profile.ridesJoined}
                     label="Joined"
-                    gradient="from-emerald-500 to-pink-500"
                 />
                 <StatCard
-                    icon="✅"
+                    icon={<CheckCircle className="w-6 h-6" />}
                     value={profile.ridesCompleted}
                     label="Completed"
-                    gradient="from-green-500 to-emerald-500"
                 />
             </div>
 
             {/* Info Cards */}
             <div className="space-y-4">
-                <InfoCard label="Hostel" value={profile.hostel || 'Not set'} icon="🏠" />
-                <InfoCard label="Department" value={profile.department || 'Not set'} icon="📚" />
+                <InfoCard label="Hostel" value={profile.hostel || 'Not set'} icon={<Building className="w-5 h-5" />} />
+                <InfoCard label="Department" value={profile.department || 'Not set'} icon={<GraduationCap className="w-5 h-5" />} />
                 <InfoCard
                     label="Member Since"
                     value={new Date(profile.createdAt).toLocaleDateString('en-IN', {
@@ -130,15 +131,20 @@ function Profile() {
                         month: 'long',
                         day: 'numeric'
                     })}
-                    icon="📅"
+                    icon={<Calendar className="w-5 h-5" />}
                 />
             </div>
 
             {/* Edit Modal */}
             {isEditing && (
-                <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-                    <div className="glass-card p-6 w-full max-w-md">
-                        <h2 className="text-xl font-bold text-black mb-6">Edit Profile</h2>
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-xl">
+                        <div className="flex items-center justify-between mb-6">
+                            <h2 className="text-xl font-bold text-black">Edit Profile</h2>
+                            <button onClick={closeEditModal} className="p-2 hover:bg-gray-100 rounded-lg transition">
+                                <X className="w-5 h-5 text-gray-500" />
+                            </button>
+                        </div>
 
                         <div className="space-y-4">
                             {/* Name */}
@@ -151,7 +157,7 @@ function Profile() {
                                     value={editName}
                                     onChange={(e) => setEditName(e.target.value)}
                                     placeholder="Your full name"
-                                    className="input-modern text-black placeholder-gray-500 w-full"
+                                    className="input-modern text-black placeholder-gray-400 w-full"
                                 />
                             </div>
 
@@ -169,12 +175,12 @@ function Profile() {
                                     }}
                                     onFocus={() => setShowHostelDropdown(true)}
                                     placeholder="Type or select your hostel"
-                                    className="input-modern text-black placeholder-gray-500 w-full"
+                                    className="input-modern text-black placeholder-gray-400 w-full"
                                 />
 
                                 {/* Dropdown */}
                                 {showHostelDropdown && filteredHostels.length > 0 && (
-                                    <div className="absolute z-10 w-full mt-1 max-h-40 overflow-y-auto rounded-xl bg-slate-800 border border-slate-700 shadow-lg">
+                                    <div className="absolute z-10 w-full mt-1 max-h-40 overflow-y-auto rounded-xl bg-white border border-gray-200 shadow-lg">
                                         {filteredHostels.slice(0, 5).map((h) => (
                                             <button
                                                 key={h.id}
@@ -183,7 +189,7 @@ function Profile() {
                                                     setEditHostel(h.name);
                                                     setShowHostelDropdown(false);
                                                 }}
-                                                className="w-full px-4 py-2 text-left text-black text-sm hover:bg-emerald-500/20 transition-colors"
+                                                className="w-full px-4 py-2 text-left text-black text-sm hover:bg-gray-50 transition-colors"
                                             >
                                                 {h.name}
                                             </button>
@@ -202,7 +208,7 @@ function Profile() {
                                     value={editDepartment}
                                     onChange={(e) => setEditDepartment(e.target.value)}
                                     placeholder="e.g., CSE, ECE, MECH"
-                                    className="input-modern text-black placeholder-gray-500 w-full"
+                                    className="input-modern text-black placeholder-gray-400 w-full"
                                 />
                             </div>
                         </div>
@@ -211,16 +217,26 @@ function Profile() {
                         <div className="flex gap-3 mt-6">
                             <button
                                 onClick={closeEditModal}
-                                className="flex-1 py-3 rounded-xl font-semibold bg-slate-700 text-black hover:bg-slate-600 transition-all"
+                                className="flex-1 py-3 rounded-xl font-semibold bg-gray-100 text-black hover:bg-gray-200 transition-all"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={handleSave}
                                 disabled={saving}
-                                className="flex-1 py-3 rounded-xl font-semibold btn-gradient text-black disabled:opacity-50"
+                                className="flex-1 py-3 rounded-xl font-semibold bg-black text-white hover:bg-gray-800 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                             >
-                                {saving ? 'Saving...' : 'Save Changes'}
+                                {saving ? (
+                                    <>
+                                        <Loader2 className="w-4 h-4 animate-spin" />
+                                        Saving...
+                                    </>
+                                ) : (
+                                    <>
+                                        <Check className="w-4 h-4" />
+                                        Save Changes
+                                    </>
+                                )}
                             </button>
                         </div>
                     </div>
@@ -230,11 +246,13 @@ function Profile() {
     );
 }
 
-function StatCard({ icon, value, label, gradient }) {
+function StatCard({ icon, value, label }) {
     return (
         <div className="glass-card p-6 text-center">
-            <div className="text-3xl mb-2">{icon}</div>
-            <div className={`text-3xl font-bold bg-gradient-to-r ${gradient} bg-clip-text text-transparent`}>
+            <div className="w-12 h-12 mx-auto mb-2 bg-gray-100 rounded-full flex items-center justify-center text-gray-700">
+                {icon}
+            </div>
+            <div className="text-3xl font-bold text-black">
                 {value}
             </div>
             <div className="text-gray-600 text-sm">{label}</div>
@@ -245,7 +263,9 @@ function StatCard({ icon, value, label, gradient }) {
 function InfoCard({ label, value, icon }) {
     return (
         <div className="glass-card p-4 flex items-center gap-4">
-            <div className="text-2xl">{icon}</div>
+            <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-700">
+                {icon}
+            </div>
             <div className="flex-1">
                 <p className="text-gray-600 text-sm">{label}</p>
                 <p className="text-black font-medium">{value}</p>
