@@ -1,7 +1,8 @@
-// RideCard - Clean Design
+// RideCard - Uber Style with Lucide Icons
 
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { MapPin, Calendar, Clock, MessageCircle, ArrowRight, Star, ArrowDown } from 'lucide-react';
 
 function RideCard({ ride, onJoin, onLeave, currentUserId }) {
     const [showDropOptions, setShowDropOptions] = useState(false);
@@ -35,7 +36,7 @@ function RideCard({ ride, onJoin, onLeave, currentUserId }) {
     };
 
     return (
-        <div className="glass-card p-6 hover:glow-effect transition-all duration-300">
+        <div className="glass-card p-6 hover:shadow-md transition-all duration-300">
             {/* Top Row: Route & Seats */}
             <div className="flex justify-between items-start mb-4">
                 <div className="flex-1">
@@ -43,15 +44,15 @@ function RideCard({ ride, onJoin, onLeave, currentUserId }) {
                         {ride.from.name}
                     </h3>
                     <div className="flex items-center gap-2 text-gray-600 text-sm">
-                        <span>↓</span>
+                        <ArrowDown className="w-4 h-4" />
                         <span>{ride.to.name}</span>
                     </div>
                 </div>
 
                 {/* Seats Badge */}
                 <div className={`text-center px-3 py-2 rounded-xl ${isFull
-                    ? 'bg-red-500/20 text-red-400'
-                    : 'bg-green-500/20 text-green-400'
+                    ? 'bg-red-50 text-red-600'
+                    : 'bg-green-50 text-green-600'
                     }`}>
                     <div className="text-xl font-bold">
                         {ride.totalSeats - ride.participants.length}
@@ -66,32 +67,36 @@ function RideCard({ ride, onJoin, onLeave, currentUserId }) {
                     {ride.dropPoints.map((dp) => (
                         <span
                             key={dp.id}
-                            className="text-xs bg-emerald-500/20 text-emerald-300 px-2 py-1 rounded-full"
+                            className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full flex items-center gap-1"
                         >
-                            📍 {dp.name}
+                            <MapPin className="w-3 h-3" />
+                            {dp.name}
                         </span>
                     ))}
                 </div>
             )}
 
-            {/* Date/Time & Cab Type */}
-            <div className="flex items-center justify-between text-sm text-gray-600 mb-4 pb-4 border-b border-gray-200">
-                <div className="flex items-center gap-3">
-                    <span>📅 {dateStr}</span>
-                    <span>🕐 {timeStr}</span>
+            {/* Date/Time */}
+            <div className="flex items-center gap-4 text-sm text-gray-600 mb-4 pb-4 border-b border-gray-100">
+                <div className="flex items-center gap-1">
+                    <Calendar className="w-4 h-4" />
+                    <span>{dateStr}</span>
                 </div>
-                <span className="text-lg">{ride.cabType.icon}</span>
+                <div className="flex items-center gap-1">
+                    <Clock className="w-4 h-4" />
+                    <span>{timeStr}</span>
+                </div>
             </div>
 
             {/* Cost Section */}
             <div className="grid grid-cols-2 gap-4 mb-4">
                 <div>
                     <p className="text-gray-500 text-xs uppercase tracking-wider">Your Cost</p>
-                    <p className="text-2xl font-bold gradient-text">₹{costPerPerson}</p>
+                    <p className="text-2xl font-bold text-black">₹{costPerPerson}</p>
                 </div>
                 <div className="text-right">
                     <p className="text-gray-500 text-xs uppercase tracking-wider">You Save</p>
-                    <p className="text-xl font-semibold text-green-400">
+                    <p className="text-xl font-semibold text-green-600">
                         {savingsPercent}%
                     </p>
                 </div>
@@ -99,11 +104,11 @@ function RideCard({ ride, onJoin, onLeave, currentUserId }) {
 
             {/* Creator */}
             <div className="flex items-center gap-2 mb-4 text-sm">
-                <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-black text-sm font-bold">
+                <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center text-white text-sm font-bold">
                     {ride.creator.name.charAt(0)}
                 </div>
                 <div>
-                    <p className="text-black">{ride.creator.name}</p>
+                    <p className="text-black font-medium">{ride.creator.name}</p>
                     <p className="text-gray-500 text-xs">{ride.creator.hostel}</p>
                 </div>
             </div>
@@ -113,9 +118,10 @@ function RideCard({ ride, onJoin, onLeave, currentUserId }) {
                 {isParticipant && (
                     <Link
                         to={`/ride/${ride._id}/chat`}
-                        className="block w-full text-center py-3 rounded-xl bg-gray-50 hover:bg-gray-100 text-black transition"
+                        className="w-full text-center py-3 rounded-xl bg-gray-100 hover:bg-gray-200 text-black transition flex items-center justify-center gap-2"
                     >
-                        💬 Open Chat
+                        <MessageCircle className="w-4 h-4" />
+                        Open Chat
                     </Link>
                 )}
 
@@ -124,7 +130,7 @@ function RideCard({ ride, onJoin, onLeave, currentUserId }) {
                         <div className="space-y-2">
                             <button
                                 onClick={() => handleJoinWithDrop(null)}
-                                className="w-full btn-gradient text-black py-2 rounded-xl text-sm"
+                                className="w-full bg-black text-white py-2 rounded-xl text-sm font-medium"
                             >
                                 {ride.to.name} (Final)
                             </button>
@@ -132,9 +138,10 @@ function RideCard({ ride, onJoin, onLeave, currentUserId }) {
                                 <button
                                     key={dp.id}
                                     onClick={() => handleJoinWithDrop(dp)}
-                                    className="w-full bg-gray-100 hover:bg-gray-200 text-black py-2 rounded-xl text-sm transition"
+                                    className="w-full bg-gray-100 hover:bg-gray-200 text-black py-2 rounded-xl text-sm transition flex items-center justify-center gap-1"
                                 >
-                                    📍 {dp.name}
+                                    <MapPin className="w-3 h-3" />
+                                    {dp.name}
                                 </button>
                             ))}
                             <button
@@ -147,9 +154,10 @@ function RideCard({ ride, onJoin, onLeave, currentUserId }) {
                     ) : (
                         <button
                             onClick={() => hasDropPoints ? setShowDropOptions(true) : handleJoinWithDrop(null)}
-                            className="w-full btn-gradient text-black py-3 rounded-xl font-semibold"
+                            className="w-full bg-black hover:bg-gray-800 text-white py-3 rounded-xl font-semibold transition flex items-center justify-center gap-2"
                         >
-                            Join Ride →
+                            Join Ride
+                            <ArrowRight className="w-4 h-4" />
                         </button>
                     )
                 )}
@@ -157,15 +165,16 @@ function RideCard({ ride, onJoin, onLeave, currentUserId }) {
                 {hasJoined && !isCreator && (
                     <button
                         onClick={() => onLeave(ride._id)}
-                        className="w-full py-3 rounded-xl bg-red-500/20 text-red-400 hover:bg-red-500/30 transition"
+                        className="w-full py-3 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 transition"
                     >
                         Leave Ride
                     </button>
                 )}
 
                 {isCreator && (
-                    <div className="text-center py-3 rounded-xl bg-emerald-500/20 text-emerald-300">
-                        ✨ Your Ride
+                    <div className="text-center py-3 rounded-xl bg-gray-100 text-gray-700 flex items-center justify-center gap-2">
+                        <Star className="w-4 h-4" />
+                        Your Ride
                     </div>
                 )}
 

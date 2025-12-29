@@ -7,6 +7,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { CAMPUS_LOCATIONS, DESTINATIONS, ON_THE_WAY_STOPS } from '../constants/locations';
 import api from '../services/api';
 import toast from 'react-hot-toast';
+import { MapPin, Clock, Users, DollarSign, ArrowRight, ArrowLeft, Sparkles } from 'lucide-react';
 
 function CreateRide() {
     const [step, setStep] = useState(1);
