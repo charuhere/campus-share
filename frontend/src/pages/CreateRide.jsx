@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { CAMPUS_LOCATIONS, DESTINATIONS, CAB_TYPES, ON_THE_WAY_STOPS } from '../constants/locations';
+import { CAMPUS_LOCATIONS, DESTINATIONS, ON_THE_WAY_STOPS } from '../constants/locations';
 import api from '../services/api';
 import toast from 'react-hot-toast';
 
@@ -21,7 +21,6 @@ function CreateRide() {
     const [showToDropdown, setShowToDropdown] = useState(false);
 
     const [selectedDateTime, setSelectedDateTime] = useState(null);
-    const [cabTypeId, setCabTypeId] = useState('');
     const [maxPeople, setMaxPeople] = useState(4);
     const [estimatedCost, setEstimatedCost] = useState('');
     const [notes, setNotes] = useState('');
@@ -46,7 +45,7 @@ function CreateRide() {
     const selectedTo = DESTINATIONS.find(dest => dest.id === toId) ||
         CAMPUS_LOCATIONS.find(loc => loc.id === toId) ||
         (toText ? { id: 'custom', name: toText, estimatedCost: 0 } : null);
-    const selectedCab = CAB_TYPES.find(cab => cab.id === cabTypeId);
+
     const availableDropPoints = toId ? (ON_THE_WAY_STOPS[toId] || []) : [];
 
     useEffect(() => {
@@ -77,7 +76,7 @@ function CreateRide() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!fromText || !toText || !selectedDateTime || !cabTypeId || !estimatedCost) {
+        if (!fromText || !toText || !selectedDateTime || !estimatedCost) {
             toast.error('Please fill all required fields');
             return;
         }
@@ -90,7 +89,7 @@ function CreateRide() {
                 to: { id: toId || 'custom', name: toText },
                 dropPoints: selectedDropPoints,
                 dateTime: selectedDateTime.toISOString(),
-                cabType: { id: cabTypeId, name: selectedCab.name, maxSeats: selectedCab.maxSeats },
+
                 totalSeats: maxPeople,
                 estimatedCost: parseInt(estimatedCost),
                 notes,
@@ -256,27 +255,6 @@ function CreateRide() {
                             />
                         </div>
 
-                        <div>
-                            <label className="block text-gray-300 text-sm mb-2">Cab Type</label>
-                            <div className="grid grid-cols-2 gap-3">
-                                {CAB_TYPES.map((cab) => (
-                                    <button
-                                        key={cab.id}
-                                        type="button"
-                                        onClick={() => setCabTypeId(cab.id)}
-                                        className={`p-4 rounded-xl text-left transition ${cabTypeId === cab.id
-                                            ? 'bg-purple-500/20 ring-1 ring-purple-500'
-                                            : 'bg-white/5 hover:bg-white/10'
-                                            }`}
-                                    >
-                                        <div className="text-2xl mb-1">{cab.icon}</div>
-                                        <div className="text-white font-medium">{cab.name}</div>
-                                        <div className="text-gray-500 text-sm">{cab.maxSeats} seats</div>
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-
                         {/* Max People Setting */}
                         <div>
                             <label className="block text-gray-300 text-sm mb-2">Max People Can Join</label>
@@ -284,7 +262,7 @@ function CreateRide() {
                                 <input
                                     type="range"
                                     min="2"
-                                    max={selectedCab?.maxSeats || 6}
+                                    max="6"
                                     value={maxPeople}
                                     onChange={(e) => setMaxPeople(parseInt(e.target.value))}
                                     className="flex-1 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
@@ -305,7 +283,7 @@ function CreateRide() {
                             <button
                                 type="button"
                                 onClick={() => setStep(3)}
-                                disabled={!selectedDateTime || !cabTypeId}
+                                disabled={!selectedDateTime}
                                 className="flex-1 btn-gradient text-white py-4 rounded-xl font-semibold disabled:opacity-50"
                             >
                                 Continue →
@@ -352,10 +330,6 @@ function CreateRide() {
                             <div className="flex justify-between text-sm">
                                 <span className="text-gray-400">When</span>
                                 <span className="text-white">{selectedDateTime?.toLocaleString()}</span>
-                            </div>
-                            <div className="flex justify-between text-sm">
-                                <span className="text-gray-400">Cab</span>
-                                <span className="text-white">{selectedCab?.icon} {selectedCab?.name}</span>
                             </div>
                             <div className="flex justify-between text-sm">
                                 <span className="text-gray-400">Max People</span>
