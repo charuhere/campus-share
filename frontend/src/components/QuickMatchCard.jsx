@@ -1,6 +1,6 @@
-// QuickMatchCard Component - Displays nearby Quick Match sessions
+// QuickMatchCard Component - Uber Style
 
-import { useState } from 'react';
+import { Zap, Clock, MapPin, Users, CheckCircle, Search, Loader2 } from 'lucide-react';
 
 function QuickMatchCard({ session, onJoin, joining }) {
     // Format time remaining
@@ -22,53 +22,64 @@ function QuickMatchCard({ session, onJoin, joining }) {
     const isExpiringSoon = session.timeRemaining < 180; // Less than 3 mins
 
     return (
-        <div className="glass-card p-4 hover:border-emerald-500/50 transition-all duration-300">
+        <div className="glass-card p-4 hover:border-black/10 transition-all duration-300">
             {/* Header */}
             <div className="flex items-start justify-between mb-3">
-                <div className="flex items-center gap-2">
-                    <span className="text-2xl">⚡</span>
+                <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center">
+                        <Zap className="w-5 h-5 text-yellow-600" />
+                    </div>
                     <div>
-                        <p className="text-sm text-gray-600">Going to</p>
-                        <h3 className="font-semibold text-black">{session.destination.name}</h3>
+                        <p className="text-xs text-gray-500 uppercase font-bold tracking-wider">Going to</p>
+                        <h3 className="font-bold text-black text-lg leading-tight">{session.destination.name}</h3>
                     </div>
                 </div>
 
                 {/* Time remaining badge */}
-                <div className={`px-2 py-1 rounded-lg text-xs font-medium ${isExpiringSoon ? 'bg-red-500/20 text-red-400' : 'bg-emerald-500/20 text-emerald-400'
+                <div className={`px-2 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 ${isExpiringSoon ? 'bg-red-50 text-red-600' : 'bg-green-50 text-green-600'
                     }`}>
-                    ⏱️ {formatTimeRemaining(session.timeRemaining)}
+                    <Clock className="w-3 h-3" />
+                    {formatTimeRemaining(session.timeRemaining)}
                 </div>
             </div>
 
             {/* Info row */}
-            <div className="flex items-center gap-4 text-sm mb-4">
+            <div className="flex items-center gap-4 text-sm mb-4 text-gray-600">
                 {/* Distance */}
-                <div className="flex items-center gap-1 text-gray-700">
-                    <span>📍</span>
-                    <span className="text-green-400 font-medium">{formatDistance(session.distance)}</span>
+                <div className="flex items-center gap-1">
+                    <MapPin className="w-4 h-4 text-gray-400" />
+                    <span>{formatDistance(session.distance)}</span>
                 </div>
 
                 {/* People */}
-                <div className="flex items-center gap-1 text-gray-700">
-                    <span>👥</span>
-                    <span className={isAlmostFull ? 'text-orange-400 font-medium' : ''}>
+                <div className="flex items-center gap-1">
+                    <Users className="w-4 h-4 text-gray-400" />
+                    <span className={isAlmostFull ? 'text-orange-600 font-semibold' : ''}>
                         {session.participantCount}/{session.maxParticipants}
                     </span>
                 </div>
 
                 {/* Status */}
-                <div className={`px-2 py-0.5 rounded-full text-xs ${session.status === 'matched'
-                    ? 'bg-green-500/20 text-green-400'
-                    : 'bg-blue-500/20 text-blue-400'
-                    }`}>
-                    {session.status === 'matched' ? '✓ Matched' : '🔍 Searching'}
+                <div className="flex items-center gap-1">
+                    {session.status === 'matched' ? (
+                        <span className="flex items-center gap-1 text-green-600 font-medium">
+                            <CheckCircle className="w-4 h-4" />
+                            Matched
+                        </span>
+                    ) : (
+                        <span className="flex items-center gap-1 text-blue-600 font-medium">
+                            <Search className="w-4 h-4" />
+                            Searching
+                        </span>
+                    )}
                 </div>
             </div>
 
             {/* Meetup point if available */}
             {session.meetupPoint?.name && (
-                <div className="text-sm text-gray-600 mb-3">
-                    <span className="text-yellow-400">📌</span> Meet at: {session.meetupPoint.name}
+                <div className="text-sm text-gray-600 mb-4 bg-gray-50 p-2 rounded-lg flex items-center gap-2">
+                    <MapPin className="w-4 h-4 text-black" />
+                    <span>Meet at: <span className="font-semibold text-black">{session.meetupPoint.name}</span></span>
                 </div>
             )}
 
@@ -76,16 +87,16 @@ function QuickMatchCard({ session, onJoin, joining }) {
             <button
                 onClick={() => onJoin(session._id)}
                 disabled={joining || session.availableSpots <= 0}
-                className={`w-full py-2 rounded-xl font-semibold transition-all duration-300 ${session.availableSpots <= 0
-                    ? 'bg-gray-200 text-gray-600 cursor-not-allowed'
-                    : 'btn-gradient text-black hover:scale-[1.02]'
+                className={`w-full py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 ${session.availableSpots <= 0
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-black text-white hover:bg-gray-800'
                     }`}
             >
                 {joining ? (
-                    <span className="flex items-center justify-center gap-2">
-                        <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                    <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
                         Joining...
-                    </span>
+                    </>
                 ) : session.availableSpots <= 0 ? (
                     'Session Full'
                 ) : (

@@ -1,5 +1,4 @@
-// QuickMatch Page - Instant ride matching with GPS
-// Ultra-fast, zero-planning ride sharing
+// QuickMatch Page - Uber Style
 
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +8,7 @@ import QuickMatchCard from '../components/QuickMatchCard';
 import api from '../services/api';
 import { getSocket, connectSocket } from '../services/socket';
 import toast from 'react-hot-toast';
+import { Zap, MapPin, Search, Navigation, Users, Loader2, MessageCircle, Lock, Unlock, X, Clock, Send, AlertTriangle } from 'lucide-react';
 
 function QuickMatch() {
     const navigate = useNavigate();
@@ -326,24 +326,27 @@ function QuickMatch() {
                 <div className="glass-card p-4 mb-4">
                     <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center gap-2">
-                            <span className="text-2xl">⚡</span>
+                            <div className="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center">
+                                <Zap className="w-5 h-5 text-yellow-600" />
+                            </div>
                             <div>
                                 <h2 className="font-bold text-black">Quick Match Active</h2>
                                 <p className="text-sm text-gray-600">Going to {activeSession.destination.name}</p>
                             </div>
                         </div>
-                        <div className={`px-3 py-1 rounded-lg font-mono font-bold ${timeRemaining < 60 ? 'bg-red-500/20 text-red-400' : 'bg-emerald-500/20 text-emerald-400'
+                        <div className={`px-3 py-1 rounded-lg font-mono font-bold flex items-center gap-1 ${timeRemaining < 60 ? 'bg-red-50 text-red-600' : 'bg-green-50 text-green-600'
                             }`}>
+                            <Clock className="w-4 h-4" />
                             {formatTime(timeRemaining)}
                         </div>
                     </div>
 
                     {/* Participants */}
-                    <div className="flex items-center gap-2 text-sm mb-3">
-                        <span>👥</span>
+                    <div className="flex items-center gap-2 text-sm mb-4 bg-gray-50 p-3 rounded-lg">
+                        <Users className="w-4 h-4 text-gray-500" />
                         <span className="text-gray-700">
                             {activeSession.participantCount} people • You are
-                            <span className="text-emerald-400 font-medium"> {activeSession.myNickname}</span>
+                            <span className="text-black font-semibold"> {activeSession.myNickname}</span>
                         </span>
                     </div>
 
@@ -351,25 +354,28 @@ function QuickMatch() {
                     <div className="flex gap-2 flex-wrap">
                         <button
                             onClick={() => setShowChat(!showChat)}
-                            className="flex-1 py-2 rounded-xl font-semibold bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-all"
+                            className="flex-1 py-2 rounded-xl font-semibold bg-black text-white hover:bg-gray-800 transition-all flex items-center justify-center gap-2"
                         >
-                            💬 {showChat ? 'Hide Chat' : 'Open Chat'}
+                            <MessageCircle className="w-4 h-4" />
+                            {showChat ? 'Hide Chat' : 'Open Chat'}
                         </button>
                         {activeSession.isCreator && (
                             <button
                                 onClick={closeRoom}
-                                className={`px-4 py-2 rounded-xl font-semibold transition-all ${roomClosed
-                                    ? 'bg-green-500/20 text-green-400 hover:bg-green-500/30'
-                                    : 'bg-orange-500/20 text-orange-400 hover:bg-orange-500/30'
+                                className={`px-4 py-2 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 ${roomClosed
+                                    ? 'bg-green-100 text-green-700 hover:bg-green-200'
+                                    : 'bg-orange-100 text-orange-700 hover:bg-orange-200'
                                     }`}
                             >
-                                {roomClosed ? '🔓 Reopen' : '🔒 Close Room'}
+                                {roomClosed ? <Unlock className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
+                                {roomClosed ? 'Reopen' : 'Close Room'}
                             </button>
                         )}
                         <button
                             onClick={leaveSession}
-                            className="px-4 py-2 rounded-xl font-semibold bg-red-500/20 text-red-400 hover:bg-red-500/30 transition-all"
+                            className="px-4 py-2 rounded-xl font-semibold bg-red-100 text-red-600 hover:bg-red-200 transition-all flex items-center justify-center gap-2"
                         >
+                            <X className="w-4 h-4" />
                             {activeSession.isCreator ? 'Cancel' : 'Leave'}
                         </button>
                     </div>
@@ -377,28 +383,38 @@ function QuickMatch() {
 
                 {/* Chat */}
                 {showChat && (
-                    <div className="flex-1 glass-card p-4 flex flex-col min-h-0">
-                        <h3 className="font-semibold text-black mb-3">Group Chat</h3>
+                    <div className="flex-1 glass-card p-4 flex flex-col min-h-0 bg-gray-50">
+                        <h3 className="font-semibold text-black mb-3 flex items-center gap-2">
+                            <MessageCircle className="w-4 h-4" />
+                            Group Chat
+                        </h3>
 
                         {/* Messages */}
-                        <div className="flex-1 overflow-y-auto space-y-2 mb-3 min-h-0">
+                        <div className="flex-1 overflow-y-auto space-y-3 mb-3 min-h-0 p-2">
                             {messages.length === 0 && (
-                                <p className="text-gray-500 text-center text-sm py-4">
-                                    No messages yet. Say hi! 👋
-                                </p>
+                                <div className="text-center py-8">
+                                    <p className="text-gray-500 text-sm">No messages yet. Say hi! 👋</p>
+                                </div>
                             )}
                             {messages.map((msg) => (
                                 <div
                                     key={msg._id}
-                                    className={`p-2 rounded-lg ${msg.senderNickname === activeSession.myNickname
-                                        ? 'bg-emerald-500/20 ml-8'
-                                        : 'bg-gray-100/50 mr-8'
+                                    className={`flex flex-col ${msg.senderNickname === activeSession.myNickname
+                                        ? 'items-end'
+                                        : 'items-start'
                                         }`}
                                 >
-                                    <p className="text-xs text-emerald-400 font-medium mb-1">
+                                    <span className="text-xs text-gray-500 mb-1 px-1">
                                         {msg.senderNickname === activeSession.myNickname ? 'You' : msg.senderNickname}
-                                    </p>
-                                    <p className="text-black text-sm">{msg.content}</p>
+                                    </span>
+                                    <div
+                                        className={`px-3 py-2 rounded-xl max-w-[85%] ${msg.senderNickname === activeSession.myNickname
+                                            ? 'bg-black text-white rounded-tr-none'
+                                            : 'bg-white text-black border border-gray-200 rounded-tl-none'
+                                            }`}
+                                    >
+                                        <p className="text-sm">{msg.content}</p>
+                                    </div>
                                 </div>
                             ))}
                             <div ref={chatEndRef} />
@@ -412,15 +428,15 @@ function QuickMatch() {
                                 onChange={(e) => setNewMessage(e.target.value)}
                                 onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
                                 placeholder="Type a message..."
-                                className="flex-1 input-modern text-black bg-transparent py-2 px-3"
+                                className="flex-1 input-modern text-black bg-white py-2 px-4 rounded-full border border-gray-200 focus:border-black focus:ring-1 focus:ring-black outline-none"
                                 maxLength={500}
                             />
                             <button
                                 onClick={sendMessage}
                                 disabled={!newMessage.trim()}
-                                className="px-4 py-2 rounded-xl btn-gradient text-black font-semibold disabled:opacity-50"
+                                className="p-2 rounded-full bg-black text-white hover:bg-gray-800 disabled:opacity-50 transition-colors flex items-center justify-center w-10 h-10"
                             >
-                                Send
+                                <Send className="w-5 h-5 ml-0.5" />
                             </button>
                         </div>
                     </div>
@@ -434,40 +450,44 @@ function QuickMatch() {
         <div className="max-w-lg mx-auto px-4 py-6">
             {/* Header */}
             <div className="text-center mb-6">
-                <div className="text-5xl mb-3">⚡</div>
-                <h1 className="text-3xl font-bold gradient-text mb-2">Quick Match</h1>
+                <div className="w-16 h-16 mx-auto mb-4 bg-black rounded-full flex items-center justify-center">
+                    <Zap className="w-8 h-8 text-white" />
+                </div>
+                <h1 className="text-3xl font-bold text-black mb-2">Quick Match</h1>
                 <p className="text-gray-600">Find riders nearby going your way — right now!</p>
             </div>
 
             {/* Location Status */}
             <div className="glass-card p-4 mb-4">
                 <div className="flex items-center gap-3">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${location ? 'bg-green-500/20' : locationError ? 'bg-red-500/20' : 'bg-yellow-500/20'
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${location ? 'bg-green-100 text-green-600' : locationError ? 'bg-red-100 text-red-600' : 'bg-yellow-100 text-yellow-600'
                         }`}>
                         {gettingLocation ? (
-                            <div className="w-5 h-5 border-2 border-yellow-400/30 border-t-yellow-400 rounded-full animate-spin"></div>
+                            <Loader2 className="w-5 h-5 animate-spin" />
                         ) : location ? (
-                            <span className="text-green-400">📍</span>
+                            <MapPin className="w-5 h-5" />
                         ) : (
-                            <span className="text-red-400">⚠️</span>
+                            <AlertTriangle className="w-5 h-5" />
                         )}
                     </div>
                     <div className="flex-1">
                         {gettingLocation ? (
-                            <p className="text-yellow-400">Getting your location...</p>
+                            <p className="text-gray-600 font-medium">Getting your location...</p>
                         ) : location ? (
                             <div>
-                                <p className="text-green-400">Location detected ✓</p>
-                                <p className="text-xs text-gray-500 mt-1">
-                                    📍 Lat: {location.latitude.toFixed(6)}, Lng: {location.longitude.toFixed(6)}
+                                <p className="text-green-600 font-medium flex items-center gap-1">
+                                    Location detected <CheckCircle className="w-3 h-3" />
+                                </p>
+                                <p className="text-xs text-gray-500 mt-1 font-mono">
+                                    {location.latitude.toFixed(6)}, {location.longitude.toFixed(6)}
                                 </p>
                             </div>
                         ) : (
                             <div>
-                                <p className="text-red-400">{locationError}</p>
+                                <p className="text-red-500 font-medium">{locationError}</p>
                                 <button
                                     onClick={getCurrentLocation}
-                                    className="text-emerald-400 text-sm underline mt-1"
+                                    className="text-black text-sm underline mt-1 font-medium hover:text-gray-700"
                                 >
                                     Try again
                                 </button>
@@ -479,22 +499,25 @@ function QuickMatch() {
 
             {/* Destination Selection - Combobox */}
             <div className="glass-card p-4 mb-4 relative">
-                <label className="block text-sm text-gray-600 mb-2">Where are you going?</label>
-                <input
-                    type="text"
-                    value={destinationText}
-                    onChange={(e) => {
-                        setDestinationText(e.target.value);
-                        setSelectedDestination(null);
-                        setShowDestDropdown(true);
-                    }}
-                    onFocus={() => setShowDestDropdown(true)}
-                    placeholder="Type or select destination"
-                    className="w-full input-modern text-black bg-transparent py-3 px-4"
-                    disabled={!location}
-                />
+                <label className="block text-sm font-medium text-gray-700 mb-2">Where are you going?</label>
+                <div className="relative">
+                    <Search className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+                    <input
+                        type="text"
+                        value={destinationText}
+                        onChange={(e) => {
+                            setDestinationText(e.target.value);
+                            setSelectedDestination(null);
+                            setShowDestDropdown(true);
+                        }}
+                        onFocus={() => setShowDestDropdown(true)}
+                        placeholder="Type or select destination"
+                        className="w-full input-modern text-black bg-white pl-10 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-1 focus:ring-black outline-none"
+                        disabled={!location}
+                    />
+                </div>
                 {showDestDropdown && filteredDestinations.length > 0 && (
-                    <div className="absolute z-10 left-4 right-4 mt-1 max-h-48 overflow-y-auto rounded-xl bg-white border border-gray-200 border border-gray-300 shadow-lg">
+                    <div className="absolute z-10 left-4 right-4 mt-1 max-h-48 overflow-y-auto rounded-xl bg-white border border-gray-200 shadow-xl">
                         {filteredDestinations.map((dest) => (
                             <button
                                 key={dest.id}
@@ -504,8 +527,9 @@ function QuickMatch() {
                                     setDestinationText(dest.name);
                                     setShowDestDropdown(false);
                                 }}
-                                className="w-full px-4 py-3 text-left text-black hover:bg-emerald-500/20 transition-colors"
+                                className="w-full px-4 py-3 text-left text-black hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-0 flex items-center gap-2"
                             >
+                                <MapPin className="w-4 h-4 text-gray-400" />
                                 {dest.name}
                             </button>
                         ))}
@@ -515,7 +539,7 @@ function QuickMatch() {
 
             {/* Max Participants */}
             <div className="glass-card p-4 mb-4">
-                <label className="block text-sm text-gray-600 mb-2">Max people can join</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Max people can join</label>
                 <div className="flex items-center gap-4">
                     <input
                         type="range"
@@ -523,9 +547,11 @@ function QuickMatch() {
                         max="6"
                         value={maxParticipants}
                         onChange={(e) => setMaxParticipants(parseInt(e.target.value))}
-                        className="flex-1 h-2 bg-gray-100 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                        className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-black"
                     />
-                    <span className="text-2xl font-bold text-emerald-400 w-10 text-center">{maxParticipants}</span>
+                    <div className="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center">
+                        <span className="text-xl font-bold text-black">{maxParticipants}</span>
+                    </div>
                 </div>
             </div>
 
@@ -534,23 +560,26 @@ function QuickMatch() {
                 <button
                     onClick={findNearby}
                     disabled={!location || loading}
-                    className="flex-1 py-3 rounded-xl font-semibold bg-gray-100 text-black hover:bg-slate-600 transition-all disabled:opacity-50"
+                    className="flex-1 py-4 rounded-xl font-semibold bg-white border border-gray-200 text-black hover:bg-gray-50 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                 >
-                    {loading ? '🔍 Searching...' : '🔍 Find Matches'}
+                    {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Search className="w-5 h-5" />}
+                    Find Matches
                 </button>
                 <button
                     onClick={createSession}
                     disabled={!location || !destinationText || loading}
-                    className="flex-1 py-3 rounded-xl font-semibold btn-gradient text-black disabled:opacity-50"
+                    className="flex-1 py-4 rounded-xl font-semibold bg-black text-white hover:bg-gray-800 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                 >
-                    ⚡ Start Quick Match
+                    {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Zap className="w-5 h-5" />}
+                    Start Quick Match
                 </button>
             </div>
 
             {/* Nearby Sessions */}
             {nearbySessions.length > 0 && (
                 <div>
-                    <h2 className="text-lg font-semibold text-black mb-3">
+                    <h2 className="text-lg font-bold text-black mb-3 flex items-center gap-2">
+                        <Users className="w-5 h-5" />
                         {nearbySessions.length} Nearby {nearbySessions.length === 1 ? 'Match' : 'Matches'}
                     </h2>
                     <div className="space-y-3">
@@ -569,12 +598,34 @@ function QuickMatch() {
             {/* Empty state after search */}
             {!loading && nearbySessions.length === 0 && selectedDestination && (
                 <div className="text-center py-8 glass-card">
-                    <div className="text-4xl mb-3">🔍</div>
-                    <p className="text-gray-600 mb-2">No one nearby going to this destination</p>
+                    <div className="w-16 h-16 mx-auto mb-3 bg-gray-100 rounded-full flex items-center justify-center">
+                        <Search className="w-8 h-8 text-gray-400" />
+                    </div>
+                    <p className="text-gray-900 font-medium mb-1">No one nearby going to this destination</p>
                     <p className="text-sm text-gray-500">Start a Quick Match and others will find you!</p>
                 </div>
             )}
         </div>
+    );
+}
+
+// Helper component for CheckCircle
+function CheckCircle({ className }) {
+    return (
+        <svg
+            className={className}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 13l4 4L19 7"
+            />
+        </svg>
     );
 }
 

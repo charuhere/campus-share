@@ -1,10 +1,11 @@
-// Complete Profile Page - Premium Design
+// Complete Profile Page - Uber Style
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { CAMPUS_LOCATIONS } from '../constants/locations';
 import toast from 'react-hot-toast';
+import { User, Loader2, ArrowRight } from 'lucide-react';
 
 function CompleteProfile() {
     const [name, setName] = useState('');
@@ -56,8 +57,10 @@ function CompleteProfile() {
             <div className="w-full max-w-md">
                 {/* Header */}
                 <div className="text-center mb-10">
-                    <div className="text-6xl mb-4">👋</div>
-                    <h1 className="text-3xl font-bold gradient-text mb-2">
+                    <div className="w-20 h-20 mx-auto mb-4 bg-black rounded-full flex items-center justify-center">
+                        <User className="w-10 h-10 text-white" />
+                    </div>
+                    <h1 className="text-3xl font-bold text-black mb-2">
                         Almost There!
                     </h1>
                     <p className="text-gray-600">
@@ -77,7 +80,7 @@ function CompleteProfile() {
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 placeholder="Your full name"
-                                className="input-modern text-black placeholder-gray-500 w-full"
+                                className="input-modern text-black placeholder-gray-400 w-full"
                                 required
                             />
                         </div>
@@ -96,18 +99,18 @@ function CompleteProfile() {
                                 }}
                                 onFocus={() => setShowHostelDropdown(true)}
                                 placeholder="Type or select your hostel"
-                                className="input-modern text-black placeholder-gray-500 w-full"
+                                className="input-modern text-black placeholder-gray-400 w-full"
                             />
 
                             {/* Dropdown */}
                             {showHostelDropdown && filteredHostels.length > 0 && (
-                                <div className="absolute z-10 w-full mt-1 max-h-48 overflow-y-auto rounded-xl bg-white border border-gray-300 shadow-lg">
+                                <div className="absolute z-10 w-full mt-1 max-h-48 overflow-y-auto rounded-xl bg-white border border-gray-200 shadow-lg">
                                     {filteredHostels.map((h) => (
                                         <button
                                             key={h.id}
                                             type="button"
                                             onClick={() => selectHostel(h.name)}
-                                            className="w-full px-4 py-3 text-left text-black hover:bg-emerald-500/20 transition-colors first:rounded-t-xl last:rounded-b-xl"
+                                            className="w-full px-4 py-3 text-left text-black hover:bg-gray-50 transition-colors first:rounded-t-xl last:rounded-b-xl"
                                         >
                                             {h.name}
                                         </button>
@@ -125,16 +128,26 @@ function CompleteProfile() {
                                 value={department}
                                 onChange={(e) => setDepartment(e.target.value)}
                                 placeholder="e.g., CSE, ECE, MECH"
-                                className="input-modern text-black placeholder-gray-500 w-full"
+                                className="input-modern text-black placeholder-gray-400 w-full"
                             />
                         </div>
 
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full btn-gradient text-black py-4 rounded-xl font-semibold text-lg disabled:opacity-50"
+                            className="w-full bg-black hover:bg-gray-800 text-white py-4 rounded-xl font-semibold text-lg disabled:opacity-50 flex items-center justify-center gap-2"
                         >
-                            {loading ? 'Saving...' : 'Complete Profile ✨'}
+                            {loading ? (
+                                <>
+                                    <Loader2 className="w-5 h-5 animate-spin" />
+                                    Saving...
+                                </>
+                            ) : (
+                                <>
+                                    Complete Profile
+                                    <ArrowRight className="w-5 h-5" />
+                                </>
+                            )}
                         </button>
                     </form>
                 </div>

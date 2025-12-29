@@ -15,13 +15,7 @@ body {
     @apply bg-white rounded-xl shadow-sm border border-gray-100;
   }
 
-  .gradient-text {
-    @apply text-black font-bold;
-  }
 
-  .btn-gradient {
-    @apply bg-black hover:bg-gray-800 text-white transition-all;
-  }
 
   .btn-secondary {
     @apply bg-white border border-gray-300 text-black hover:bg-gray-50 transition-all;
