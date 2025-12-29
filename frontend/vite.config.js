@@ -6,5 +6,12 @@ export default defineConfig({
   server: {
     port: 3000,
     strictPort: true,
+    host: '0.0.0.0', // Force listen on all interfaces
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+      },
+    },
   },
 })

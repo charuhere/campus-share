@@ -16,8 +16,9 @@ export async function connectSocket() {
 
     const token = await user.getIdToken();
 
-    // Connect to backend
-    socket = io('http://localhost:5000', {
+    // Connect to backend (dynamically using same host as frontend, port 5000)
+    const socketUrl = `${window.location.protocol}//${window.location.hostname}:5000`;
+    socket = io(socketUrl, {
         auth: { token },
     });
 

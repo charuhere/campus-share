@@ -4,8 +4,8 @@
     "description": "Share rides with VIT students and split cab costs",
     "start_url": "/",
     "display": "standalone",
-    "background_color": "#0f172a",
-    "theme_color": "#3b82f6",
+    "background_color": "#ffffff",
+    "theme_color": "#000000",
     "orientation": "portrait",
     "icons": [
         {
